@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Example.Business.UI.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pdf="clr-namespace:Maui.PDFView;assembly=Maui.PDFView"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Example">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            Command="{Binding AppearingCommand}"
+            EventName="Appearing" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*">
+        <HorizontalStackLayout>
+            <CheckBox
+                IsChecked="{Binding IsHorizontal}"
+                VerticalOptions="Center" />
+            <Label
+                Text="Horizontal"
+                VerticalOptions="Center" />
+
+            <Button
+                Command="{Binding ChangeUriCommand}"
+                Text="ChangeUri" />
+        </HorizontalStackLayout>
+
+        <pdf:PdfView
+            Grid.Row="1"
+            IsHorizontal="{Binding IsHorizontal}"
+            Uri="{Binding PdfSource}" />
+    </Grid>
+
+</ContentPage>
