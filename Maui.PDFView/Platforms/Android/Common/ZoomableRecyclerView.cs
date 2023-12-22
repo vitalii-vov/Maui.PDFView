@@ -13,10 +13,10 @@ namespace Maui.PDFView.Platforms.Android.Common
         private const float MIN_ZOOM = 1f;
         private const float DEFAULT_MAX_ZOOM = 3f;
 
+        private readonly ScaleGestureDetector _scaleDetector;
+        private readonly GestureDetectorCompat _gestureDetector;
         private float _scaleFactor = MIN_ZOOM;
         private bool _isScaling = false;
-        private ScaleGestureDetector scaleDetector;
-        private GestureDetectorCompat gestureDetector;
 
         private float _scaleFocusX = 0f;
         private float _scaleFocusY = 0f;
@@ -26,10 +26,10 @@ namespace Maui.PDFView.Platforms.Android.Common
         private float _maxTranX = 0f;
         private float _maxTranY = 0f;
 
-        public ZoomableRecyclerView(Context context, IAttributeSet attrs = null, int defStyleAttr = 0) : base(context, attrs, defStyleAttr)
+        public ZoomableRecyclerView(Context context, IAttributeSet? attrs = null, int defStyleAttr = 0) : base(context, attrs, defStyleAttr)
         {
-            scaleDetector = new ScaleGestureDetector(context, this);
-            gestureDetector = new GestureDetectorCompat(context, new GestureListener(this));
+            _scaleDetector = new ScaleGestureDetector(context, this);
+            _gestureDetector = new GestureDetectorCompat(context, new GestureListener(this));
             SetLayoutManager(new ZoomableLinearLayoutManager(context, LinearLayoutManager.Vertical, false));
         }
 
@@ -97,8 +97,8 @@ namespace Maui.PDFView.Platforms.Android.Common
             if (!IsZoomEnabled)
                 return base.OnTouchEvent(ev);
 
-            var returnValue = scaleDetector.OnTouchEvent(ev);
-            returnValue = gestureDetector.OnTouchEvent(ev) || returnValue;
+            var returnValue = _scaleDetector.OnTouchEvent(ev);
+            returnValue = _gestureDetector.OnTouchEvent(ev) || returnValue;
             return base.OnTouchEvent(ev) || returnValue;
         }
 

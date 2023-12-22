@@ -25,9 +25,6 @@ namespace Maui.PDFView.Platforms.Android.Common
             vh.Image.SetImageBitmap(Pages[position]);
         }
 
-        public override int ItemCount
-        {
-            get { return Pages.Count; }
-        }
+        public override int ItemCount => Pages.Count;
     }
 }
