@@ -52,8 +52,10 @@ namespace Maui.PDFView.Platforms.iOS
             PlatformView.Document = new PdfDocument(NSData.FromFile(_fileName));
 
             PlatformView.MaxScaleFactor = 4f;
-            //view.MinScaleFactor = view.ScaleFactorForSizeToFit;
+            //PlatformView.MinScaleFactor = PlatformView.ScaleFactorForSizeToFit;
             PlatformView.MinScaleFactor = (nfloat)(UIScreen.MainScreen.Bounds.Height * 0.00075);
+
+            PlatformView.AutoScales = true;
         }
     }
 }

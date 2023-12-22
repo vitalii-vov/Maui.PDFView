@@ -8,8 +8,8 @@ namespace Example.Business.Services
 
         public RepositoryService()
         {
-            _pdfs.Enqueue("pdf1.pdf");
             _pdfs.Enqueue("pdf2.pdf");
+            _pdfs.Enqueue("pdf1.pdf");
         }
 
         public string GetPdfSource()
