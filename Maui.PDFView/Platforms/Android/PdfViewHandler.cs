@@ -4,10 +4,12 @@ using Android.OS;
 using AndroidX.RecyclerView.Widget;
 using Maui.PDFView.Platforms.Android.Common;
 using Microsoft.Maui.Handlers;
+using Android.Widget;
+using Android.Views;
 
 namespace Maui.PDFView.Platforms.Android
 {
-    internal class PdfViewHandler : ViewHandler<IPdfView, ZoomableRecyclerView>
+    internal class PdfViewHandler : ViewHandler<IPdfView, FrameLayout>
     {
         private readonly static PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)
         {
@@ -15,8 +17,9 @@ namespace Maui.PDFView.Platforms.Android
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
         };
 
-        private readonly ScreenHelper _screenHelper = new ScreenHelper();
-        private string _uri;
+        private readonly ScreenHelper _screenHelper = new();
+        private ZoomableRecyclerView _recycleView;
+        private string _fileName;
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -24,25 +27,34 @@ namespace Maui.PDFView.Platforms.Android
 
         static void MapUri(PdfViewHandler handler, IPdfView pdfView)
         {
-            handler._uri = pdfView.Uri;
+            handler._fileName = pdfView.Uri;
             handler.RenderPages();
         }
 
         static void MapIsHorizontal(PdfViewHandler handler, IPdfView pdfView)
         {
-            var layoutManager = handler.PlatformView.GetLayoutManager() as LinearLayoutManager;
+            var layoutManager = handler._recycleView.GetLayoutManager() as LinearLayoutManager;
             layoutManager.Orientation = pdfView.IsHorizontal
                 ? LinearLayoutManager.Horizontal
                 : LinearLayoutManager.Vertical;
         }
 
-        protected override ZoomableRecyclerView CreatePlatformView()
+        protected override FrameLayout CreatePlatformView()
         {
-            var view = new ZoomableRecyclerView(Context);
-            var layoutManager = new ZoomableLinearLayoutManager(view.Context, LinearLayoutManager.Vertical, false);
-            view.SetLayoutManager(layoutManager);
+            var layout = new FrameLayout(Context)
+            {
+                LayoutParameters = new(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent)
+            };
 
-            return view;
+            _recycleView = new ZoomableRecyclerView(Context)
+            {
+                LayoutParameters = new(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent)
+            };
+            var layoutManager = new ZoomableLinearLayoutManager(_recycleView.Context, LinearLayoutManager.Vertical, false);
+            _recycleView.SetLayoutManager(layoutManager);
+
+            layout.AddView(_recycleView);
+            return layout;
         }
 
         public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
@@ -53,16 +65,12 @@ namespace Maui.PDFView.Platforms.Android
 
         void RenderPages()
         {
-            var fileName = _uri;
-            if (fileName == null)
+            if (_fileName == null)
                 return;
 
             var isVertival = !VirtualView.IsHorizontal;
 
-            MemoryStream memoryStream = new();
-            File.OpenRead(fileName).CopyTo(memoryStream);
-
-            var renderer = new PdfRenderer(ParcelFileDescriptor.Open(new Java.IO.File(fileName), ParcelFileMode.ReadOnly));
+            var renderer = new PdfRenderer(ParcelFileDescriptor.Open(new Java.IO.File(_fileName), ParcelFileMode.ReadOnly));
 
             var pages = new List<Bitmap>();
 
@@ -99,7 +107,7 @@ namespace Maui.PDFView.Platforms.Android
             var adapter = new PdfBitmapAdapter(pages);
 
             // Plug the adapter into the RecyclerView:
-            PlatformView.SetAdapter(adapter);
+            _recycleView.SetAdapter(adapter);
         }
     }
 }
