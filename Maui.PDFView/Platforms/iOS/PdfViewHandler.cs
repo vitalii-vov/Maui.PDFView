@@ -34,14 +34,13 @@ namespace Maui.PDFView.Platforms.iOS
 
         protected override PdfKit.PdfView CreatePlatformView()
         {
-            return new PdfKit.PdfView
-            {
-                AutosizesSubviews = true,
-                AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleBottomMargin,
-                AutoScales = true,
-                DisplayMode = PdfDisplayMode.SinglePageContinuous,
-                DisplaysPageBreaks = true
-            };
+            return new PdfKit.PdfView();
+        }
+
+        public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
+        {
+            RenderPages();
+            return base.GetDesiredSize(widthConstraint, heightConstraint);
         }
 
         void RenderPages()
@@ -50,6 +49,11 @@ namespace Maui.PDFView.Platforms.iOS
                 return;
 
             PlatformView.Document = new PdfDocument(NSData.FromFile(_fileName));
+
+            PlatformView.AutosizesSubviews = true;
+            PlatformView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleBottomMargin;
+            PlatformView.DisplayMode = PdfDisplayMode.SinglePageContinuous;
+            PlatformView.DisplaysPageBreaks = true;
 
             PlatformView.MaxScaleFactor = 4f;
             //PlatformView.MinScaleFactor = PlatformView.ScaleFactorForSizeToFit;
