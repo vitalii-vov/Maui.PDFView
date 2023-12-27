@@ -20,6 +20,7 @@
 		<Company>Vitalii Vovchok</Company>
 		<Description>MAUI library for displaying PDF files</Description>
 		<PackageProjectUrl>https://github.com/vitalii-vov/Maui.PDFView</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup>
