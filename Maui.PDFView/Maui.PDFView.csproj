@@ -41,15 +41,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="NugetReadme.md">
-	    <Generator></Generator>
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	  <None Update="NugetReadme.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
