@@ -9,9 +9,8 @@
 | iOS          | ✅        |
 
 ## Installation
-Coming soon
 ```
-Install-Package
+Install-Package Vitvov.Maui.PDFView
 ```
 
 ## Usage
