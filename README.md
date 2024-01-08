@@ -1,7 +1,8 @@
 # Maui.PDFView
+Library for display PDF files in .NET MAUI on Android and iOS
 
-.Net 8.0
-.Net MAUI
+.NET 8.0
+.NET MAUI
 
 | Platform     | Supported |
 | :----------- | :-------  |
@@ -34,22 +35,27 @@ public static class MauiProgram
 ```
 
 ```xaml
-<!--
-IsHorizontal — Display PDF horizontally
-Uri — Path to the file on the device
--->
-<pdf:PdfView
-    IsHorizontal="{Binding IsHorizontal}"
-    Uri="{Binding PdfSource}" />
+<ContentPage
+    x:Class="Example.Business.UI.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pdf="clr-namespace:Maui.PDFView;assembly=Maui.PDFView">
+
+    <!--
+    IsHorizontal — Display PDF horizontally
+    Uri — Path to the file on the device
+    -->
+    <pdf:PdfView
+        IsHorizontal="{Binding IsHorizontal}"
+        Uri="{Binding PdfSource}" />
+
+</ContentPage>
 ```
 
 ```C#
 internal partial class MainPageViewModel : ObservableObject
 {
-    private readonly RepositoryService _repository = new();
-
     [ObservableProperty] private string _pdfSource;
-    [ObservableProperty] private bool _isHorizontal;
 
     [RelayCommand] private void ChangeUri()
     {
