@@ -1,6 +1,8 @@
 # Maui.PDFView
 Library for display PDF files in .NET MAUI on Android and iOS
 
+https://github.com/vitalii-vov/Maui.PDFView/assets/71486507/4977ede8-c8db-454f-930d-ba2ec704f16d
+
 .NET 8.0
 .NET MAUI
 
