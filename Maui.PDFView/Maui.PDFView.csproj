@@ -21,8 +21,8 @@
 		<Description>MAUI library for displaying PDF files</Description>
 		<PackageProjectUrl>https://github.com/vitalii-vov/Maui.PDFView</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.0.2</Version>
-		<PackageReadmeFile>NugetReadme.md</PackageReadmeFile>
+		<Version>1.0.3</Version>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -45,7 +45,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="NugetReadme.md">
+	  <None Include="..\README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
