@@ -12,8 +12,9 @@ namespace Example.Business.Services
             _pdfs.Enqueue("pdf1.pdf");
         }
 
-        public string GetPdfSource()
+        public (string, long) GetPdfSource()
         {
+            long fileLen = 0;
             var name = NextPdfName();
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -24,6 +25,7 @@ namespace Example.Business.Services
             byte[] bytes;
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
+                fileLen = stream.Length;
                 bytes = new byte[stream.Length];
                 stream.Read(bytes, 0, bytes.Length);
             }
@@ -31,7 +33,7 @@ namespace Example.Business.Services
             var fileName = Path.Combine(Path.GetTempPath(), name);
             File.WriteAllBytes(fileName, bytes);
 
-            return fileName;
+            return (fileName, fileLen) ;
         }
 
         private string NextPdfName()
