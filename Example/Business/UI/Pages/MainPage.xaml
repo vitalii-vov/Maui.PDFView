@@ -21,7 +21,7 @@
             <Label
                 Text="Horizontal"
                 VerticalOptions="Center" /> -->
-            <!--<Grid>
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -36,7 +36,7 @@
                 <Label Text = "Load speed" Grid.Row="1"/>
                 <Label Text="{Binding ElapsedTime}" Margin="12,0,0,0" Grid.Column="1" Grid.Row="1"/>
 
-            </Grid>-->
+            </Grid>
  <Button 
          Command="{Binding ChangeUriCommand}"
          Text="ChangeUri" />

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Example">
+      <entry key="Android">
         <State>
           <targetSelectedWithDropDown>
             <Target>
@@ -15,11 +15,8 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-29T16:48:41.162968Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-05-30T18:43:43.479820Z" />
         </State>
-      </entry>
-      <entry key="Maui.PDFView">
-        <State />
       </entry>
     </value>
   </component>
