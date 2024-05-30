@@ -21,7 +21,7 @@
             <Label
                 Text="Horizontal"
                 VerticalOptions="Center" /> -->
-            <Grid>
+            <Grid Margin="6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -35,11 +35,12 @@
                 <Label Text = "{Binding FileSize}" Grid.Column="1"/>
                 <Label Text = "Load speed" Grid.Row="1"/>
                 <Label Text="{Binding ElapsedTime}" Margin="12,0,0,0" Grid.Column="1" Grid.Row="1"/>
+                <Button Grid.Row="2" Grid.Column="1"
+                    Command="{Binding ChangeUriCommand}"
+                    Text="ChangeUri" />
 
             </Grid>
- <Button 
-         Command="{Binding ChangeUriCommand}"
-         Text="ChangeUri" />
+
 
         </HorizontalStackLayout>
 
