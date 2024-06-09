@@ -16,7 +16,6 @@ namespace Example.Business.Services
 
             //  Save the data to a file to get the path to the file.
             //  You can then pass the file path to the library.
-
             var fileName = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             File.WriteAllBytes(fileName, bytes);
 
