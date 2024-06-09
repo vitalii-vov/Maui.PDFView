@@ -6,7 +6,7 @@ namespace Example.Business.UI.ViewModels
 {
     internal partial class MainPageViewModel : ObservableObject
     {
-        private readonly RepositoryService _repository = new();
+        private readonly IRepositoryService _repository = new RepositoryService();
 
         [ObservableProperty] private string _pdfSource;
         [ObservableProperty] private bool _isHorizontal;

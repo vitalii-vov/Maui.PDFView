@@ -62,6 +62,7 @@ internal partial class MainPageViewModel : ObservableObject
 
     [RelayCommand] private void ChangeUri()
     {
+        //  See the example project to understand how to work with paths.
         PdfSource = "/path/to/file.pdf";
     }
 }

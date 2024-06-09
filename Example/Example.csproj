@@ -38,6 +38,9 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
+	  <CreatePackage>false</CreatePackage>
+	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -59,6 +62,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\PDF\pdf1.pdf" />
 	  <None Remove="Resources\PDF\pdf2.pdf" />
+	  <None Remove="Business\Collections\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -84,4 +88,7 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Business\Collections\" />
+	</ItemGroup>
 </Project>

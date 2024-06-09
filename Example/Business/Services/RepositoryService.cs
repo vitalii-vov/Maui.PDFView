@@ -1,20 +1,43 @@
 ﻿using System.Reflection;
+using Example.Business.Collections;
 
 namespace Example.Business.Services
 {
-    internal class RepositoryService
+    internal class RepositoryService : IRepositoryService
     {
-        private readonly Queue<string> _pdfs = new();
-
-        public RepositoryService()
-        {
-            _pdfs.Enqueue("pdf2.pdf");
-            _pdfs.Enqueue("pdf1.pdf");
-        }
+        private readonly MockPdfLoader _loader = new();
 
         public string GetPdfSource()
         {
-            var name = NextPdfName();
+            //  Get PDF as byte[] from any source.
+            //  It can be a file downloaded via REST request, retrieved from user's local disk, etc.,
+            //  or as in this example - retrieved from application resources. 
+            byte[] bytes = _loader.GetPdfFileContent();
+
+            //  Save the data to a file to get the path to the file.
+            //  You can then pass the file path to the library.
+
+            var fileName = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            File.WriteAllBytes(fileName, bytes);
+
+            //  Return path to PDF file
+            return fileName;
+        }
+    }
+
+    internal class MockPdfLoader
+    {
+        private readonly LoopedList<string> _pdfs = new();
+
+        public MockPdfLoader()
+        {
+            _pdfs.Add("pdf2.pdf");
+            _pdfs.Add("pdf1.pdf");
+        }
+
+        public byte[] GetPdfFileContent()
+        {
+            var name = _pdfs.Next();
 
             var assembly = Assembly.GetExecutingAssembly();
             string resourceName = assembly
@@ -28,17 +51,7 @@ namespace Example.Business.Services
                 stream.Read(bytes, 0, bytes.Length);
             }
 
-            var fileName = Path.Combine(Path.GetTempPath(), name);
-            File.WriteAllBytes(fileName, bytes);
-
-            return fileName;
-        }
-
-        private string NextPdfName()
-        {
-            var name = _pdfs.Dequeue();
-            _pdfs.Enqueue(name);
-            return name;
+            return bytes;
         }
     }
 }
