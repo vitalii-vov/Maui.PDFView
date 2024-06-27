@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="Example.Business.UI.Pages.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -14,23 +14,58 @@
     </ContentPage.Behaviors>
 
     <Grid RowDefinitions="Auto,*">
-        <HorizontalStackLayout>
-            <CheckBox
-                IsChecked="{Binding IsHorizontal}"
-                VerticalOptions="Center" />
+
+        <Grid
+            RowDefinitions="Auto,Auto"
+            ColumnDefinitions="Auto,Auto,Auto"
+            ColumnSpacing="8">
+
             <Label
+                Grid.Row="0"
+                Grid.Column="0"
                 Text="Horizontal"
+                FontSize="Caption"
+                HorizontalTextAlignment="Center"
                 VerticalOptions="Center" />
 
+            <CheckBox
+                Grid.Row="1"
+                Grid.Column="0"
+                IsChecked="{Binding IsHorizontal}"
+                VerticalOptions="Center" />
+
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="1"
+                FontSize="Caption"
+                HorizontalTextAlignment="Center"
+                Text="{Binding MaxZoom, StringFormat='Max zoom is {0}'}">
+            </Label>
+
+            <Stepper
+                Grid.Row="1"
+                Grid.Column="1"
+                Minimum="1"
+                Maximum="5"
+                Value="{Binding MaxZoom}"/>
+
+
             <Button
+                Grid.Row="0"
+                Grid.Column="2"
+                Grid.RowSpan="2"
+                VerticalOptions="Center"
                 Command="{Binding ChangeUriCommand}"
                 Text="ChangeUri" />
-        </HorizontalStackLayout>
+
+        </Grid>
 
         <pdf:PdfView
             Grid.Row="1"
             IsHorizontal="{Binding IsHorizontal}"
-            Uri="{Binding PdfSource}" />
+            Uri="{Binding PdfSource}"
+            MaxZoom="{Binding MaxZoom}"/>
     </Grid>
 
 </ContentPage>

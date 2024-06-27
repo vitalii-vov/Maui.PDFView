@@ -10,6 +10,7 @@ namespace Example.Business.UI.ViewModels
 
         [ObservableProperty] private string _pdfSource;
         [ObservableProperty] private bool _isHorizontal;
+        [ObservableProperty] private float _maxZoom = 4;
 
         [RelayCommand] private void Appearing()
         {

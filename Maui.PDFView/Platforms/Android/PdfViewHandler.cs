@@ -15,6 +15,7 @@ namespace Maui.PDFView.Platforms.Android
         {
             [nameof(IPdfView.Uri)] = MapUri,
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
+            [nameof(IPdfView.MaxZoom)] = MapMaxZoom
         };
 
         private readonly ScreenHelper _screenHelper = new();
@@ -37,6 +38,11 @@ namespace Maui.PDFView.Platforms.Android
             layoutManager.Orientation = pdfView.IsHorizontal
                 ? LinearLayoutManager.Horizontal
                 : LinearLayoutManager.Vertical;
+        }
+
+        static void MapMaxZoom(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler._recycleView.MaxZoom = pdfView.MaxZoom;
         }
 
         protected override FrameLayout CreatePlatformView()

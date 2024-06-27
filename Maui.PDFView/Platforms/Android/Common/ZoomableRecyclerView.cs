@@ -11,7 +11,7 @@ namespace Maui.PDFView.Platforms.Android.Common
     internal partial class ZoomableRecyclerView : RecyclerView
     {
         private const float MIN_ZOOM = 1f;
-        private const float DEFAULT_MAX_ZOOM = 3f;
+        private const float DEFAULT_MAX_ZOOM = 4f;
 
         private readonly ScaleGestureDetector _scaleDetector;
         private readonly GestureDetectorCompat _gestureDetector;

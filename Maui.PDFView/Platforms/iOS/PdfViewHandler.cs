@@ -11,6 +11,7 @@ namespace Maui.PDFView.Platforms.iOS
         {
             [nameof(IPdfView.Uri)] = MapUri,
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
+            [nameof(IPdfView.MaxZoom)] = MapMaxZoom
         };
 
         private string _fileName;
@@ -30,6 +31,12 @@ namespace Maui.PDFView.Platforms.iOS
             handler.PlatformView.DisplayDirection = pdfView.IsHorizontal
                                         ? PdfDisplayDirection.Horizontal
                                         : PdfDisplayDirection.Vertical;
+        }
+
+        static void MapMaxZoom(PdfViewHandler handler, IPdfView pdfView)
+        {
+            //  reset MaxScaleFactor inside RenderPages
+            handler.RenderPages();
         }
 
         protected override PdfKit.PdfView CreatePlatformView()
@@ -55,7 +62,7 @@ namespace Maui.PDFView.Platforms.iOS
             PlatformView.DisplayMode = PdfDisplayMode.SinglePageContinuous;
             PlatformView.DisplaysPageBreaks = true;
 
-            PlatformView.MaxScaleFactor = 4f;
+            PlatformView.MaxScaleFactor = VirtualView.MaxZoom;
             //PlatformView.MinScaleFactor = PlatformView.ScaleFactorForSizeToFit;
             PlatformView.MinScaleFactor = (nfloat)(UIScreen.MainScreen.Bounds.Height * 0.00075);
 
