@@ -47,10 +47,12 @@ public static class MauiProgram
     <!--
     IsHorizontal — Display PDF horizontally
     Uri — Path to the file on the device
+    MaxZoom — Max zoom level
     -->
     <pdf:PdfView
         IsHorizontal="{Binding IsHorizontal}"
-        Uri="{Binding PdfSource}" />
+        Uri="{Binding PdfSource}"
+        MaxZoom="4"/>
 
 </ContentPage>
 ```
