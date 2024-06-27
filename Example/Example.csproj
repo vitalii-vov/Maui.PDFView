@@ -13,6 +13,8 @@
 		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
+		<WindowsAppSdkDeploymentManagerInitialize>false</WindowsAppSdkDeploymentManagerInitialize>
+
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Example</RootNamespace>
 		<UseMaui>true</UseMaui>

@@ -16,6 +16,7 @@ namespace Maui.PDFView.Platforms.Windows
         {
             [nameof(IPdfView.Uri)] = MapUri,
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
+            [nameof(IPdfView.MaxZoom)] = MapMaxZoom
         };
 
         private ScrollViewer _scrollViewer;
@@ -37,6 +38,11 @@ namespace Maui.PDFView.Platforms.Windows
             handler._stack.Orientation = pdfView.IsHorizontal
                 ? Orientation.Horizontal 
                 : Orientation.Vertical;
+        }
+
+        static void MapMaxZoom(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler._scrollViewer.MaxZoomFactor = pdfView.MaxZoom;
         }
 
         protected override ScrollViewer CreatePlatformView()
