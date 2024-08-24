@@ -10,12 +10,12 @@ namespace Maui.PDFView.Platforms.Android.Common
 {
     internal partial class ZoomableRecyclerView : RecyclerView
     {
-        private const float MIN_ZOOM = 1f;
-        private const float DEFAULT_MAX_ZOOM = 4f;
+        private const float MinZoom = 1f;
+        private const float DefaultMaxZoom = 4f;
 
         private readonly ScaleGestureDetector _scaleDetector;
         private readonly GestureDetectorCompat _gestureDetector;
-        private float _scaleFactor = MIN_ZOOM;
+        private float _scaleFactor = MinZoom;
         private bool _isScaling = false;
 
         private float _scaleFocusX = 0f;
@@ -34,7 +34,7 @@ namespace Maui.PDFView.Platforms.Android.Common
         }
 
         public bool IsZoomEnabled { get; set; } = true;
-        public float MaxZoom { get; set; } = DEFAULT_MAX_ZOOM;
+        public float MaxZoom { get; set; } = DefaultMaxZoom;
 
         public int CalculateScrollAmountY(int dy)
         {
@@ -122,7 +122,7 @@ namespace Maui.PDFView.Platforms.Android.Common
         {
             var previousScaleFactor = _scaleFactor;
             _scaleFactor *= detector.ScaleFactor;
-            _scaleFactor = CoerceIn(_scaleFactor, MIN_ZOOM, MaxZoom);
+            _scaleFactor = CoerceIn(_scaleFactor, MinZoom, MaxZoom);
             _maxTranX = Width * _scaleFactor - Width;
             _maxTranY = Height * _scaleFactor - Height;
             _scaleFocusX = detector.FocusX;
@@ -133,7 +133,7 @@ namespace Maui.PDFView.Platforms.Android.Common
             _tranY += _scaleFocusY * (previousScaleFactor - _scaleFactor);
             _tranY = CoerceIn(_tranY, -_maxTranY, 0f);
 
-            OverScrollMode = _scaleFactor > MIN_ZOOM
+            OverScrollMode = _scaleFactor > MinZoom
                 ? OverScrollMode.Never
                 : OverScrollMode.IfContentScrolls;
 
@@ -175,7 +175,7 @@ namespace Maui.PDFView.Platforms.Android.Common
             {
                 if (!_zoomableRecycler._isScaling)
                 {
-                    if (_zoomableRecycler._scaleFactor > MIN_ZOOM)
+                    if (_zoomableRecycler._scaleFactor > MinZoom)
                     {
                         var newTranX = _zoomableRecycler._tranX - distanceX;
                         _zoomableRecycler._tranX = CoerceIn(newTranX, -_zoomableRecycler._maxTranX, 0f);
