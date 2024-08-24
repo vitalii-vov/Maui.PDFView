@@ -5,7 +5,7 @@ namespace Example.Business.Services
 {
     internal class RepositoryService : IRepositoryService
     {
-        private readonly MockPdfLoader _loader = new();
+        private readonly ResourcePdfLoader _loader = new();
 
         public string GetPdfSource()
         {
@@ -24,11 +24,11 @@ namespace Example.Business.Services
         }
     }
 
-    internal class MockPdfLoader
+    internal class ResourcePdfLoader
     {
         private readonly LoopedList<string> _pdfs = new();
 
-        public MockPdfLoader()
+        public ResourcePdfLoader()
         {
             _pdfs.Add("pdf2.pdf");
             _pdfs.Add("pdf1.pdf");
