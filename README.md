@@ -10,7 +10,7 @@ https://github.com/vitalii-vov/Maui.PDFView/assets/71486507/4977ede8-c8db-454f-9
 | :----------- | :-------  |
 | Android      | ✅        |
 | iOS          | ✅        |
-| Windows      | alpha     |
+| Windows      | ✅        |
 
 ## Installation
 ```
@@ -64,8 +64,15 @@ internal partial class MainPageViewModel : ObservableObject
 
     [RelayCommand] private void ChangeUri()
     {
-        //  See the example project to understand how to work with paths.
-        PdfSource = "/path/to/file.pdf";
+        try 
+        {
+            //  See the example project to understand how to work with paths.
+            PdfSource = "/path/to/file.pdf";
+        }
+        catch(Exception ex)
+        {
+             // handle exceptions
+        }
     }
 }
 ```
