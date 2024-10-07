@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Handlers;
+﻿using Maui.PDFView.Events;
+using Microsoft.Maui.Handlers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -25,8 +26,6 @@ namespace Maui.PDFView.Platforms.Windows
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
-            // Attach scroll event to track page changes
-            _scrollViewer.ViewChanged += OnScrollViewerViewChanged;
         }
 
         static async void MapUri(PdfViewHandler handler, IPdfView pdfView)
@@ -57,6 +56,9 @@ namespace Maui.PDFView.Platforms.Windows
                 HorizontalScrollBarVisibility = Microsoft.UI.Xaml.Controls.ScrollBarVisibility.Visible,
                 VerticalScrollBarVisibility = Microsoft.UI.Xaml.Controls.ScrollBarVisibility.Visible,
             };
+
+            // Attach scroll event to track page changes
+            _scrollViewer.ViewChanged += OnScrollViewerViewChanged;
 
             _stack = new StackPanel { Orientation = Orientation.Vertical };
             _scrollViewer.Content = _stack;
@@ -130,7 +132,7 @@ namespace Maui.PDFView.Platforms.Windows
                 return;
 
             int currentPage = -1;
-            float maxVisibleSize = 0f;
+            double maxVisibleSize = 0.0;
 
             for (int i = 0; i < layout.Children.Count; i++)
             {
@@ -138,12 +140,12 @@ namespace Maui.PDFView.Platforms.Windows
                 if (child != null)
                 {
                     var transform = child.TransformToVisual(_scrollViewer);
-                    var position = transform.TransformBounds(new Rect(0, 0, 1, 1));
+                    var position = transform.TransformBounds(new(0, 0, 1, 1));
 
                     // Determine if the child is visible in the viewport
                     if (position.Bottom >= 0 && position.Top <= _scrollViewer.ViewportHeight)
                     {
-                        float visibleSize = position.Height;
+                        var visibleSize = position.Height;
                         if (visibleSize > maxVisibleSize)
                         {
                             maxVisibleSize = visibleSize;
@@ -153,9 +155,9 @@ namespace Maui.PDFView.Platforms.Windows
                 }
             }
 
-            if (currentPage >= 0 && _handler.VirtualView.PageChangedCommand?.CanExecute(null) == true)
+            if (currentPage >= 0 && VirtualView.PageChangedCommand?.CanExecute(null) == true)
             {
-                _handler.VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
+                VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
             }
         }
     }
