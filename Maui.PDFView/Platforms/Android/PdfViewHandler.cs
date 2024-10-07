@@ -142,18 +142,22 @@ namespace Maui.PDFView.Platforms.Android
 
                 // Determine the index of the page that is most visible
                 int currentPage = firstVisibleItemPosition;
-                float maxVisibleHeight = 0f;
+                float maxVisibleSize = 0f;
 
                 for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++)
                 {
                     var visibleChild = layoutManager.FindViewByPosition(i);
                     if (visibleChild != null)
                     {
-                        float visibleHeight = Math.Min(visibleChild.Bottom, recyclerView.Height) - Math.Max(visibleChild.Top, 0);
-                        if (visibleHeight > maxVisibleHeight)
+                        // Check if the layout is horizontal or vertical
+                        float visibleSize = layoutManager.Orientation == LinearLayoutManager.Horizontal
+                            ? Math.Min(visibleChild.Right, recyclerView.Width) - Math.Max(visibleChild.Left, 0) // Width
+                            : Math.Min(visibleChild.Bottom, recyclerView.Height) - Math.Max(visibleChild.Top, 0); // Height
+
+                        if (visibleSize > maxVisibleSize)
                         {
-                            maxVisibleHeight = visibleHeight;
-                            currentPage = i; // Update current page
+                            maxVisibleSize = visibleSize;
+                            currentPage = i;
                         }
                     }
                 }
