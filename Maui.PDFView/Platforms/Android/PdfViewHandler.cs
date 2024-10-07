@@ -6,6 +6,7 @@ using Maui.PDFView.Platforms.Android.Common;
 using Microsoft.Maui.Handlers;
 using Android.Widget;
 using Android.Views;
+using Maui.PDFView.Events;
 
 namespace Maui.PDFView.Platforms.Android
 {
@@ -58,6 +59,8 @@ namespace Maui.PDFView.Platforms.Android
             };
             var layoutManager = new ZoomableLinearLayoutManager(_recycleView.Context, LinearLayoutManager.Vertical, false);
             _recycleView.SetLayoutManager(layoutManager);
+
+            _recycleView.AddOnScrollListener(new PdfScrollListener(this));
 
             layout.AddView(_recycleView);
             return layout;
@@ -114,6 +117,50 @@ namespace Maui.PDFView.Platforms.Android
 
             // Plug the adapter into the RecyclerView:
             _recycleView.SetAdapter(adapter);
+        }
+
+        private class PdfScrollListener : RecyclerView.OnScrollListener
+        {
+            private readonly PdfViewHandler _handler;
+
+            public PdfScrollListener(PdfViewHandler handler)
+            {
+                _handler = handler;
+            }
+
+            public override void OnScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                base.OnScrolled(recyclerView, dx, dy);
+
+                var layoutManager = (LinearLayoutManager)recyclerView.GetLayoutManager();
+                int firstVisibleItemPosition = layoutManager.FindFirstVisibleItemPosition();
+                int lastVisibleItemPosition = layoutManager.FindLastVisibleItemPosition();
+
+                // Ensure valid visible positions
+                if (firstVisibleItemPosition == RecyclerView.NoPosition || lastVisibleItemPosition == RecyclerView.NoPosition)
+                    return;
+
+                // Determine the index of the page that is most visible
+                int currentPage = firstVisibleItemPosition;
+                float maxVisibleHeight = 0f;
+
+                for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++)
+                {
+                    var visibleChild = layoutManager.FindViewByPosition(i);
+                    if (visibleChild != null)
+                    {
+                        float visibleHeight = Math.Min(visibleChild.Bottom, recyclerView.Height) - Math.Max(visibleChild.Top, 0);
+                        if (visibleHeight > maxVisibleHeight)
+                        {
+                            maxVisibleHeight = visibleHeight;
+                            currentPage = i; // Update current page
+                        }
+                    }
+                }
+
+                // Execute the command if available
+                _handler.VirtualView.PageChangedCommand?.Execute(new PageChangedEventArgs(currentPage + 1, layoutManager.ItemCount));
+            }
         }
     }
 }
