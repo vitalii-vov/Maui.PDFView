@@ -136,16 +136,24 @@ namespace Maui.PDFView.Platforms.Windows
 
             for (int i = 0; i < layout.Children.Count; i++)
             {
-                var child = layout.Children[i] as UIElement;
+                var child = layout.Children[i] as FrameworkElement;
                 if (child != null)
                 {
                     var transform = child.TransformToVisual(_scrollViewer);
-                    var position = transform.TransformBounds(new(0, 0, 1, 1));
+                    var position = transform.TransformBounds(new(0, 0, child.ActualWidth, child.ActualHeight));
 
-                    // Determine if the child is visible in the viewport
-                    if (position.Bottom >= 0 && position.Top <= _scrollViewer.ViewportHeight)
+                    // Check visibility based on the scrolling direction
+                    bool isVisible = VirtualView.IsHorizontal
+                        ? (position.Right >= 0 && position.Left <= _scrollViewer.ViewportWidth)
+                        : (position.Bottom >= 0 && position.Top <= _scrollViewer.ViewportHeight);
+
+                    if (isVisible)
                     {
-                        var visibleSize = position.Height;
+                        // Calculate visible size based on the layout orientation
+                        double visibleSize = VirtualView.IsHorizontal
+                            ? Math.Min(position.Right, _scrollViewer.ViewportWidth) - Math.Max(position.Left, 0)
+                            : Math.Min(position.Bottom, _scrollViewer.ViewportHeight) - Math.Max(position.Top, 0);
+
                         if (visibleSize > maxVisibleSize)
                         {
                             maxVisibleSize = visibleSize;
@@ -153,6 +161,7 @@ namespace Maui.PDFView.Platforms.Windows
                         }
                     }
                 }
+            
             }
 
             if (currentPage >= 0 && VirtualView.PageChangedCommand?.CanExecute(null) == true)
