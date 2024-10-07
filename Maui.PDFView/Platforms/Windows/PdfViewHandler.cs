@@ -25,6 +25,8 @@ namespace Maui.PDFView.Platforms.Windows
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
+            // Attach scroll event to track page changes
+            _scrollViewer.ViewChanged += OnScrollViewerViewChanged;
         }
 
         static async void MapUri(PdfViewHandler handler, IPdfView pdfView)
@@ -106,18 +108,55 @@ namespace Maui.PDFView.Platforms.Windows
 
         public static void AddShadow(Microsoft.UI.Xaml.Controls.Grid target, int ZDepth)
         {
-            //  create border for shadow (reciever). make sure there are space to show shadow so set margin negative.
-            Microsoft.UI.Xaml.Controls.Border shadowReciever = new() { Margin = new Microsoft.UI.Xaml.Thickness(-ZDepth) };
-            //  add reciever to parent grid
-            target.Children.Insert(0, shadowReciever);
+            //  create border for shadow (receiver). make sure there are space to show shadow so set margin negative.
+            Microsoft.UI.Xaml.Controls.Border shadowReceiver = new() { Margin = new Microsoft.UI.Xaml.Thickness(-ZDepth) };
+            //  add receiver to parent grid
+            target.Children.Insert(0, shadowReceiver);
             //  create new theme shadow
             ThemeShadow sharedShadow = new();
             //  connect shadow to framework element
             target.Shadow = sharedShadow;
-            //  connect reciever to theme shadow
-            sharedShadow.Receivers.Add(shadowReciever);
+            //  connect receiver to theme shadow
+            sharedShadow.Receivers.Add(shadowReceiver);
             //  set shadow depth
             target.Translation += new Vector3(0, 0, ZDepth);
+        }
+
+        private void OnScrollViewerViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            // Get the index of the currently visible page
+            var layout = (StackPanel)_scrollViewer.Content;
+            if (layout.Children.Count == 0)
+                return;
+
+            int currentPage = -1;
+            float maxVisibleSize = 0f;
+
+            for (int i = 0; i < layout.Children.Count; i++)
+            {
+                var child = layout.Children[i] as UIElement;
+                if (child != null)
+                {
+                    var transform = child.TransformToVisual(_scrollViewer);
+                    var position = transform.TransformBounds(new Rect(0, 0, 1, 1));
+
+                    // Determine if the child is visible in the viewport
+                    if (position.Bottom >= 0 && position.Top <= _scrollViewer.ViewportHeight)
+                    {
+                        float visibleSize = position.Height;
+                        if (visibleSize > maxVisibleSize)
+                        {
+                            maxVisibleSize = visibleSize;
+                            currentPage = i;
+                        }
+                    }
+                }
+            }
+
+            if (currentPage >= 0 && _handler.VirtualView.PageChangedCommand?.CanExecute(null) == true)
+            {
+                _handler.VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
+            }
         }
     }
 }
