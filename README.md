@@ -49,7 +49,7 @@ public static class MauiProgram
     IsHorizontal — Display PDF horizontally
     Uri — Path to the file on the device
     MaxZoom — Max zoom level
-    PageChangedCommand — event of changing the current country page
+    PageChangedCommand — event of changing the current page
     -->
     <pdf:PdfView
         IsHorizontal="{Binding IsHorizontal}"
