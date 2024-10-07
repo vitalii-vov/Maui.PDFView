@@ -10,6 +10,7 @@ https://github.com/vitalii-vov/Maui.PDFView/assets/71486507/4977ede8-c8db-454f-9
 | :----------- | :-------  |
 | Android      | ✅        |
 | iOS          | ✅        |
+| MacOS        | ✅        |
 | Windows      | ✅        |
 
 ## Installation
@@ -48,11 +49,13 @@ public static class MauiProgram
     IsHorizontal — Display PDF horizontally
     Uri — Path to the file on the device
     MaxZoom — Max zoom level
+    PageChangedCommand — event of changing the current country page
     -->
     <pdf:PdfView
         IsHorizontal="{Binding IsHorizontal}"
         Uri="{Binding PdfSource}"
-        MaxZoom="4"/>
+        MaxZoom="4"
+        PageChangedCommand="{Binding PageChangedCommand}"/>
 
 </ContentPage>
 ```
