@@ -154,6 +154,14 @@ namespace Maui.PDFView.Platforms.Android
                             ? Math.Min(visibleChild.Right, recyclerView.Width) - Math.Max(visibleChild.Left, 0) // Width
                             : Math.Min(visibleChild.Bottom, recyclerView.Height) - Math.Max(visibleChild.Top, 0); // Height
 
+                        // There may be a situation where the height (or width in case of horizontal orientation) of the pages are different. 
+                        // In this case, the page that is fully displayed is considered visible.
+                        if (visibleSize == (layoutManager.Orientation == LinearLayoutManager.Horizontal ? visibleChild.Width : visibleChild.Height))
+                        {
+                            currentPage = i;
+                            break;
+                        }
+
                         if (visibleSize > maxVisibleSize)
                         {
                             maxVisibleSize = visibleSize;
