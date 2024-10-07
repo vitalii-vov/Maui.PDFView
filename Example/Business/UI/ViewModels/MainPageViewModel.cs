@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Example.Business.Services;
 using Maui.PDFView.Events;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace Example.Business.UI.ViewModels
@@ -26,7 +27,7 @@ namespace Example.Business.UI.ViewModels
 
         [RelayCommand] private void PageChanged(PageChangedEventArgs args)
         {
-            System.Diagnostics.Debug.WriteLine($"Текущая страница: {args.CurrentPage} из {args.TotalPages}");
+            Debug.WriteLine($"Current page: {args.CurrentPage} из {args.TotalPages}");
         }
     }
 }

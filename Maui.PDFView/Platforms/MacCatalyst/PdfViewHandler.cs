@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using Maui.PDFView.Events;
 using Microsoft.Maui.Handlers;
 using PdfKit;
 using UIKit;
@@ -41,7 +42,15 @@ namespace Maui.PDFView.Platforms.MacCatalyst
 
         protected override PdfKit.PdfView CreatePlatformView()
         {
-            return new PdfKit.PdfView();
+            var pdfView = new PdfKit.PdfView();
+
+            // Подписываемся на уведомление об изменении страницы
+            NSNotificationCenter.DefaultCenter.AddObserver(
+                PdfKit.PdfView.PageChangedNotification, 
+                PageChangedNotificationHandler, 
+                pdfView);
+
+            return pdfView;
         }
 
         public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
@@ -67,6 +76,28 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             PlatformView.MinScaleFactor = (nfloat)(UIScreen.MainScreen.Bounds.Height * 0.00075);
 
             PlatformView.AutoScales = true;
+        }
+
+        private void PageChangedNotificationHandler(NSNotification notification)
+        {
+            var currentPage = PlatformView.CurrentPage;
+            if (currentPage is null)
+                return;
+
+            var document = PlatformView.Document;
+            if (document is null)
+                return;
+
+            if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false)) 
+                return;
+
+            VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)(document.GetPageIndex(currentPage) + 1), (int)document.PageCount));
+        }
+
+        protected override void DisconnectHandler(PdfKit.PdfView platformView)
+        {
+            NSNotificationCenter.DefaultCenter.RemoveObserver(PlatformView);
+            base.DisconnectHandler(platformView);
         }
     }
 }

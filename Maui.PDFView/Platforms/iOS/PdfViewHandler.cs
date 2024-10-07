@@ -92,8 +92,6 @@ namespace Maui.PDFView.Platforms.iOS
                 return;
 
             VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)(document.GetPageIndex(currentPage) + 1), (int)document.PageCount));
-
-            //System.Diagnostics.Debug.WriteLine($"Current page: {currentPage?.Label}");
         }
 
         protected override void DisconnectHandler(PdfKit.PdfView platformView)
