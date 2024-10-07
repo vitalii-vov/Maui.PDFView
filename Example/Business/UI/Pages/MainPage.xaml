@@ -65,7 +65,8 @@
             Grid.Row="1"
             IsHorizontal="{Binding IsHorizontal}"
             Uri="{Binding PdfSource}"
-            MaxZoom="{Binding MaxZoom}"/>
+            MaxZoom="{Binding MaxZoom}"
+            PageChangedCommand="{Binding PageChangedCommand}"/>
     </Grid>
 
 </ContentPage>

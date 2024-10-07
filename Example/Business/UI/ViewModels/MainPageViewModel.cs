@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Example.Business.Services;
+using Maui.PDFView.Events;
+using System.Windows.Input;
 
 namespace Example.Business.UI.ViewModels
 {
@@ -20,6 +22,11 @@ namespace Example.Business.UI.ViewModels
         [RelayCommand] private void ChangeUri()
         {
             PdfSource = _repository.GetPdfSource();
+        }
+
+        [RelayCommand] private void PageChanged(PageChangedEventArgs args)
+        {
+            System.Diagnostics.Debug.WriteLine($"Текущая страница: {args.CurrentPage} из {args.TotalPages}");
         }
     }
 }

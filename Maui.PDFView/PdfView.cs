@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows.Input;
 
 namespace Maui.PDFView
 {
@@ -23,6 +24,12 @@ namespace Maui.PDFView
                 defaultValue: 4f,
                 propertyChanged: OnMaxZoomPropertyChanged);
 
+        public static readonly BindableProperty PageChangedCommandProperty = BindableProperty.Create(
+                propertyName: nameof(PageChangedCommand),
+                returnType: typeof(ICommand),
+                declaringType: typeof(PdfView),
+                defaultValue: default(ICommand));
+
         public string Uri
         {
             get => (string)GetValue(UriProperty);
@@ -39,6 +46,12 @@ namespace Maui.PDFView
         {
             get => (float)GetValue(MaxZoomProperty);
             set => SetValue(MaxZoomProperty, value);
+        }
+
+        public ICommand PageChangedCommand
+        {
+            get => (ICommand)GetValue(PageChangedCommandProperty);
+            set => SetValue(PageChangedCommandProperty, value);
         }
 
         private static void OnMaxZoomPropertyChanged(BindableObject bindable, object oldValue, object newValue)
