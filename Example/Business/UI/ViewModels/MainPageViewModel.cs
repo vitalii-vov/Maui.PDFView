@@ -27,7 +27,7 @@ namespace Example.Business.UI.ViewModels
 
         [RelayCommand] private void PageChanged(PageChangedEventArgs args)
         {
-            Debug.WriteLine($"Current page: {args.CurrentPage} из {args.TotalPages}");
+            Debug.WriteLine($"Current page: {args.CurrentPage} of {args.TotalPages}");
         }
     }
 }
