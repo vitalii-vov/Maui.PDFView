@@ -44,7 +44,7 @@ namespace Maui.PDFView.Platforms.MacCatalyst
         {
             var pdfView = new PdfKit.PdfView();
 
-            // Подписываемся на уведомление об изменении страницы
+            // Subscribe to notification of page changes
             NSNotificationCenter.DefaultCenter.AddObserver(
                 PdfKit.PdfView.PageChangedNotification, 
                 PageChangedNotificationHandler, 

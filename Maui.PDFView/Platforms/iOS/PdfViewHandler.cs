@@ -36,7 +36,7 @@ namespace Maui.PDFView.Platforms.iOS
 
         static void MapMaxZoom(PdfViewHandler handler, IPdfView pdfView)
         {
-            //  reset MaxScaleFactor inside RenderPages
+            // reset MaxScaleFactor inside RenderPages
             handler.RenderPages();
         }
 
@@ -44,7 +44,7 @@ namespace Maui.PDFView.Platforms.iOS
         {
             var pdfView = new PdfKit.PdfView();
 
-            // Подписываемся на уведомление об изменении страницы
+            // Subscribe to notification of page changes
             NSNotificationCenter.DefaultCenter.AddObserver(
                 PdfKit.PdfView.PageChangedNotification, 
                 PageChangedNotificationHandler, 
