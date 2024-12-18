@@ -8,4 +8,10 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         BindingContext = new MainPageViewModel();
     }
+
+    private void ContentPage_Unloaded(object sender, EventArgs e)
+    {
+        pdfView.Handler?.DisconnectHandler();
+    }
+
 }

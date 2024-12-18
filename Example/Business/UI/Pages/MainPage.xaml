@@ -5,27 +5,26 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pdf="clr-namespace:Maui.PDFView;assembly=Maui.PDFView"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    Title="Example">
+    Title="Example"
+    Unloaded="ContentPage_Unloaded">
 
     <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior
-            Command="{Binding AppearingCommand}"
-            EventName="Appearing" />
+        <toolkit:EventToCommandBehavior Command="{Binding AppearingCommand}" EventName="Appearing" />
     </ContentPage.Behaviors>
 
     <Grid RowDefinitions="Auto,*">
 
         <Grid
-            RowDefinitions="Auto,Auto"
-            ColumnDefinitions="Auto,Auto,Auto"
-            ColumnSpacing="8">
+            ColumnDefinitions="Auto,Auto,Auto,Auto"
+            ColumnSpacing="8"
+            RowDefinitions="Auto,Auto">
 
             <Label
                 Grid.Row="0"
                 Grid.Column="0"
-                Text="Horizontal"
                 FontSize="Caption"
                 HorizontalTextAlignment="Center"
+                Text="Horizontal"
                 VerticalOptions="Center" />
 
             <CheckBox
@@ -40,33 +39,41 @@
                 Grid.Column="1"
                 FontSize="Caption"
                 HorizontalTextAlignment="Center"
-                Text="{Binding MaxZoom, StringFormat='Max zoom is {0}'}">
-            </Label>
+                Text="{Binding MaxZoom, StringFormat='Max zoom is {0}'}" />
 
             <Stepper
                 Grid.Row="1"
                 Grid.Column="1"
-                Minimum="1"
                 Maximum="5"
-                Value="{Binding MaxZoom}"/>
+                Minimum="1"
+                Value="{Binding MaxZoom}" />
 
 
             <Button
                 Grid.Row="0"
-                Grid.Column="2"
                 Grid.RowSpan="2"
-                VerticalOptions="Center"
+                Grid.Column="2"
                 Command="{Binding ChangeUriCommand}"
-                Text="ChangeUri" />
+                Text="ChangeUri"
+                VerticalOptions="Center" />
+
+            <Button
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="3"
+                Command="{Binding OpenNewPageCommand}"
+                Text="Open new page"
+                VerticalOptions="Center" />
 
         </Grid>
 
         <pdf:PdfView
+            x:Name="pdfView"
             Grid.Row="1"
             IsHorizontal="{Binding IsHorizontal}"
-            Uri="{Binding PdfSource}"
             MaxZoom="{Binding MaxZoom}"
-            PageChangedCommand="{Binding PageChangedCommand}"/>
+            PageChangedCommand="{Binding PageChangedCommand}"
+            Uri="{Binding PdfSource}" />
     </Grid>
 
 </ContentPage>

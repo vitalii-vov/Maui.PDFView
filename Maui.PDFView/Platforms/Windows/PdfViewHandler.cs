@@ -57,13 +57,22 @@ namespace Maui.PDFView.Platforms.Windows
                 VerticalScrollBarVisibility = Microsoft.UI.Xaml.Controls.ScrollBarVisibility.Visible,
             };
 
-            // Attach scroll event to track page changes
-            _scrollViewer.ViewChanged += OnScrollViewerViewChanged;
-
             _stack = new StackPanel { Orientation = Orientation.Vertical };
             _scrollViewer.Content = _stack;
 
             return _scrollViewer;
+        }
+
+        protected override void ConnectHandler(ScrollViewer platformView)
+        {
+            _scrollViewer.ViewChanged += OnScrollViewerViewChanged;
+            base.ConnectHandler(platformView);
+        }
+
+        protected override void DisconnectHandler(ScrollViewer platformView)
+        {
+            _scrollViewer.ViewChanged -= OnScrollViewerViewChanged;
+            base.DisconnectHandler(platformView);
         }
 
         async Task RenderPages()
