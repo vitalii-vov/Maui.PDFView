@@ -66,7 +66,14 @@
             IsHorizontal="{Binding IsHorizontal}"
             Uri="{Binding PdfSource}"
             MaxZoom="{Binding MaxZoom}"
-            PageChangedCommand="{Binding PageChangedCommand}"/>
+            PageChangedCommand="{Binding PageChangedCommand}">
+        
+            <pdf:PdfView.PageAppearance>
+                <pdf:PageAppearance ShadowEnabled="False"
+                                    Margin="16, 8"/>
+            </pdf:PdfView.PageAppearance>
+            
+        </pdf:PdfView>
     </Grid>
 
 </ContentPage>
