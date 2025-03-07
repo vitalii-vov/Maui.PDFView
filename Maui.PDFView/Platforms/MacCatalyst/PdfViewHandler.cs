@@ -12,7 +12,8 @@ namespace Maui.PDFView.Platforms.MacCatalyst
         {
             [nameof(IPdfView.Uri)] = MapUri,
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
-            [nameof(IPdfView.MaxZoom)] = MapMaxZoom
+            [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
+            [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
         };
 
         private string _fileName;
@@ -36,8 +37,24 @@ namespace Maui.PDFView.Platforms.MacCatalyst
 
         static void MapMaxZoom(PdfViewHandler handler, IPdfView pdfView)
         {
-            //  reset MaxScaleFactor inside RenderPages
+            // reset MaxScaleFactor inside RenderPages
             handler.RenderPages();
+        }
+
+        static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
+        {
+            var appearance = pdfView.PageAppearance ?? PageAppearance.Default;
+            
+            //  set shadow
+            if (OperatingSystem.IsIOSVersionAtLeast(12, 0))
+                handler.PlatformView.PageShadowsEnabled = appearance.ShadowEnabled;
+            
+            //  set margin
+            handler.PlatformView.PageBreakMargins = new UIEdgeInsets(
+                (nfloat)appearance.Margin.Top,
+                (nfloat)appearance.Margin.Left, 
+                (nfloat)appearance.Margin.Bottom,
+                (nfloat)appearance.Margin.Right);
         }
 
         protected override PdfKit.PdfView CreatePlatformView()
@@ -65,7 +82,7 @@ namespace Maui.PDFView.Platforms.MacCatalyst
                 return;
 
             PlatformView.Document = new PdfDocument(NSData.FromFile(_fileName));
-
+            
             PlatformView.AutosizesSubviews = true;
             PlatformView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleBottomMargin;
             PlatformView.DisplayMode = PdfDisplayMode.SinglePageContinuous;
