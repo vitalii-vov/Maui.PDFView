@@ -8,24 +8,22 @@
     Title="Example">
 
     <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior
-            Command="{Binding AppearingCommand}"
-            EventName="Appearing" />
+        <toolkit:EventToCommandBehavior Command="{Binding AppearingCommand}" EventName="Appearing" />
     </ContentPage.Behaviors>
 
     <Grid RowDefinitions="Auto,*">
 
         <Grid
-            RowDefinitions="Auto,Auto"
             ColumnDefinitions="Auto,Auto,Auto"
-            ColumnSpacing="8">
+            ColumnSpacing="8"
+            RowDefinitions="Auto,Auto">
 
             <Label
                 Grid.Row="0"
                 Grid.Column="0"
-                Text="Horizontal"
                 FontSize="Caption"
                 HorizontalTextAlignment="Center"
+                Text="Horizontal"
                 VerticalOptions="Center" />
 
             <CheckBox
@@ -33,45 +31,42 @@
                 Grid.Column="0"
                 IsChecked="{Binding IsHorizontal}"
                 VerticalOptions="Center" />
-            
+
             <Label
                 Grid.Row="0"
                 Grid.Column="1"
                 FontSize="Caption"
                 HorizontalTextAlignment="Center"
-                Text="{Binding MaxZoom, StringFormat='Max zoom is {0}'}">
-            </Label>
+                Text="{Binding MaxZoom, StringFormat='Max zoom is {0}'}" />
 
             <Stepper
                 Grid.Row="1"
                 Grid.Column="1"
-                Minimum="1"
                 Maximum="5"
-                Value="{Binding MaxZoom}"/>
-            
+                Minimum="1"
+                Value="{Binding MaxZoom}" />
+
             <Button
                 Grid.Row="0"
-                Grid.Column="2"
                 Grid.RowSpan="2"
-                VerticalOptions="Center"
+                Grid.Column="2"
                 Command="{Binding ChangeUriCommand}"
-                Text="ChangeUri" />
+                Text="ChangeUri"
+                VerticalOptions="Center" />
 
         </Grid>
 
         <pdf:PdfView
             Grid.Row="1"
             IsHorizontal="{Binding IsHorizontal}"
-            Uri="{Binding PdfSource}"
             MaxZoom="{Binding MaxZoom}"
-            PageChangedCommand="{Binding PageChangedCommand}">
-        
+            PageChangedCommand="{Binding PageChangedCommand}"
+            Uri="{Binding PdfSource}">
+
             <pdf:PdfView.PageAppearance>
-                <pdf:PageAppearance 
-                    ShadowEnabled="True"
-                    Margin="16, 8"/>
+                <pdf:PageAppearance Margin="16,8" ShadowEnabled="True" />
             </pdf:PdfView.PageAppearance>
-            
+
         </pdf:PdfView>
     </Grid>
 

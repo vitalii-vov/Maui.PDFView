@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using Windows.Data.Pdf;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -17,12 +18,15 @@ namespace Maui.PDFView.Platforms.Windows
         {
             [nameof(IPdfView.Uri)] = MapUri,
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
-            [nameof(IPdfView.MaxZoom)] = MapMaxZoom
+            [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
+            [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
         };
 
         private ScrollViewer _scrollViewer;
         private StackPanel _stack;
         private string _fileName;
+
+        private PageAppearance? _pageAppearance;
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -44,6 +48,11 @@ namespace Maui.PDFView.Platforms.Windows
         static void MapMaxZoom(PdfViewHandler handler, IPdfView pdfView)
         {
             handler._scrollViewer.MaxZoomFactor = pdfView.MaxZoom;
+        }
+
+        static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler._pageAppearance = pdfView.PageAppearance ?? PageAppearance.Default;
         }
 
         protected override ScrollViewer CreatePlatformView()
@@ -88,22 +97,26 @@ namespace Maui.PDFView.Platforms.Windows
                     await bitmap.SetSourceAsync(stream);
                 }
 
-                _stack.Children.Add(MakePage(bitmap));
+                _stack.Children.Add(MakePage(bitmap, _pageAppearance));
             }
         }
 
-        private UIElement MakePage(BitmapImage image)
+        private UIElement MakePage(BitmapImage image, PageAppearance pageAppearance)
         {
+            var appearance = pageAppearance ?? PageAppearance.Default;
+            var am = appearance.Margin;
+
             var border = new Microsoft.UI.Xaml.Controls.Grid
             {
                 CornerRadius = new Microsoft.UI.Xaml.CornerRadius(4),
-                Margin = new Microsoft.UI.Xaml.Thickness(10),
+                Margin = new Microsoft.UI.Xaml.Thickness(am.Left, am.Top, am.Right, am.Bottom),
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Center,
                 VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center
             };
             border.Children.Add(new Microsoft.UI.Xaml.Controls.Image { Source = image });
 
-            AddShadow(border, 32);
+            if (appearance.ShadowEnabled)
+                AddShadow(border, 32);
 
             return border;
         }
