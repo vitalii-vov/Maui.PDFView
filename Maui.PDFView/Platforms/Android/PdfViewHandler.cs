@@ -16,12 +16,15 @@ namespace Maui.PDFView.Platforms.Android
         {
             [nameof(IPdfView.Uri)] = MapUri,
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
-            [nameof(IPdfView.MaxZoom)] = MapMaxZoom
+            [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
+            [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
         };
 
         private readonly ScreenHelper _screenHelper = new();
         private ZoomableRecyclerView _recycleView;
         private string _fileName;
+        
+        private PageAppearance? _pageAppearance;
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -44,6 +47,11 @@ namespace Maui.PDFView.Platforms.Android
         static void MapMaxZoom(PdfViewHandler handler, IPdfView pdfView)
         {
             handler._recycleView.MaxZoom = pdfView.MaxZoom;
+        }
+        
+        static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler._pageAppearance = pdfView.PageAppearance ?? PageAppearance.Default;
         }
 
         protected override FrameLayout CreatePlatformView()
@@ -113,7 +121,7 @@ namespace Maui.PDFView.Platforms.Android
 
             // Create an adapter for the RecyclerView, and pass it the
             // data set (the bitmap list) to manage:
-            var adapter = new PdfBitmapAdapter(pages);
+            var adapter = new PdfBitmapAdapter(pages, _pageAppearance);
 
             // Plug the adapter into the RecyclerView:
             _recycleView.SetAdapter(adapter);

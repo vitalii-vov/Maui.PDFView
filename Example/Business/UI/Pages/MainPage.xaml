@@ -33,8 +33,7 @@
                 Grid.Column="0"
                 IsChecked="{Binding IsHorizontal}"
                 VerticalOptions="Center" />
-
-
+            
             <Label
                 Grid.Row="0"
                 Grid.Column="1"
@@ -49,8 +48,7 @@
                 Minimum="1"
                 Maximum="5"
                 Value="{Binding MaxZoom}"/>
-
-
+            
             <Button
                 Grid.Row="0"
                 Grid.Column="2"
@@ -69,8 +67,9 @@
             PageChangedCommand="{Binding PageChangedCommand}">
         
             <pdf:PdfView.PageAppearance>
-                <pdf:PageAppearance ShadowEnabled="False"
-                                    Margin="16, 8"/>
+                <pdf:PageAppearance 
+                    ShadowEnabled="True"
+                    Margin="16, 8"/>
             </pdf:PdfView.PageAppearance>
             
         </pdf:PdfView>
