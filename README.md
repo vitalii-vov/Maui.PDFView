@@ -48,16 +48,26 @@ public static class MauiProgram
     xmlns:pdf="clr-namespace:Maui.PDFView;assembly=Maui.PDFView">
 
     <!--
-    IsHorizontal — Display PDF horizontally
-    Uri — Path to the file on the device
-    MaxZoom — Max zoom level
-    PageChangedCommand — event of changing the current page
+    IsHorizontal        — Display PDF horizontally
+    Uri                 — Path to the file on the device
+    MaxZoom             — Max zoom level
+    PageChangedCommand  — event of changing the current page
     -->
     <pdf:PdfView
         IsHorizontal="{Binding IsHorizontal}"
         Uri="{Binding PdfSource}"
         MaxZoom="4"
-        PageChangedCommand="{Binding PageChangedCommand}"/>
+        PageChangedCommand="{Binding PageChangedCommand}">
+
+        <!--
+            Margin          — Page Margin
+            ShadowEnabled   — Page Shadow
+        -->
+        <pdf:PdfView.PageAppearance>
+            <pdf:PageAppearance Margin="16,8" ShadowEnabled="True" />
+        </pdf:PdfView.PageAppearance>
+
+    </pdf:PdfView>
 
 </ContentPage>
 ```
