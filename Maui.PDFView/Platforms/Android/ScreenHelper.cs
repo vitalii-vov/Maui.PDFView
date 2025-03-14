@@ -10,6 +10,7 @@ namespace Maui.PDFView.Platforms.Android
     {
         private int _widthPixels;
         private int _heightPixels;
+        private float _density;
 
         public void Invalidate()
         {
@@ -19,6 +20,7 @@ namespace Maui.PDFView.Platforms.Android
             {
                 _widthPixels = windowManager.CurrentWindowMetrics.Bounds.Width();
                 _heightPixels = windowManager.CurrentWindowMetrics.Bounds.Height();
+                _density = windowManager.CurrentWindowMetrics.Density;
                 return;
             }
 
@@ -26,7 +28,10 @@ namespace Maui.PDFView.Platforms.Android
             windowManager.DefaultDisplay.GetMetrics(metrics);
             _widthPixels = metrics.WidthPixels;
             _heightPixels = metrics.HeightPixels;
+            _density = metrics.Density;
         }
+        
+        public float Density => _density;
 
         public (int Width, int Height) GetImageWidthAndHeight(bool isVertival, PdfRenderer.Page page)
         {
@@ -39,7 +44,6 @@ namespace Maui.PDFView.Platforms.Android
                 width = _widthPixels;
                 ratio = (float)page.Height / page.Width;
                 height = (int)(width * ratio);
-
             }
             else
             {

@@ -64,7 +64,10 @@
             Uri="{Binding PdfSource}">
 
             <pdf:PdfView.PageAppearance>
-                <pdf:PageAppearance Margin="0" ShadowEnabled="False" Crop="64,32" />
+                <pdf:PageAppearance 
+                    Margin="0" 
+                    ShadowEnabled="True" 
+                    Crop="64,32" />
             </pdf:PdfView.PageAppearance>
 
         </pdf:PdfView>

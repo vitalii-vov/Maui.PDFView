@@ -105,9 +105,12 @@ namespace Maui.PDFView.Platforms.Android
 
                 //  If you need to apply a color to the page
                 //bitmap.EraseColor(Color.White);
+                
+                // Crop page
+                var matrix = GetCropMatrix(page, bitmap, _pageAppearance?.Crop ?? Thickness.Zero);
 
                 // render PDF page to bitmap
-                page.Render(bitmap, null, null, PdfRenderMode.ForDisplay);
+                page.Render(bitmap, null, matrix, PdfRenderMode.ForDisplay);
 
                 // add bitmap to list
                 pages.Add(bitmap);
@@ -127,6 +130,34 @@ namespace Maui.PDFView.Platforms.Android
             _recycleView.SetAdapter(adapter);
         }
 
+        private Matrix? GetCropMatrix(PdfRenderer.Page page, Bitmap bitmap, Thickness bounds)
+        {
+            if (bounds.IsEmpty)
+                return null;
+            
+            int pageWidth = page.Width;
+            int pageHeight = page.Height;
+                
+            var cropLeft = (int) (bounds.Left );
+            int cropTop = (int) (bounds.Top );
+            int cropRight = pageWidth - (int) (bounds.Right ) + cropLeft;
+            int cropBottom = pageHeight - (int) (bounds.Bottom ) + cropTop;
+
+            // Create a matrix for shifting and scaling
+            Matrix matrix = new Matrix();
+
+            // Scale the cut area to the entire bitmap
+            float scaleX = (float)bitmap.Width / (cropRight - cropLeft);
+            float scaleY = (float)bitmap.Height / (cropBottom - cropTop);
+
+            matrix.SetScale(scaleX, scaleY);
+
+            // Shift the rendering area so that only the necessary part of the PDF is drawn
+            matrix.PostTranslate(-cropLeft * scaleX, -cropTop * scaleY);
+
+            return matrix;
+        }
+        
         private class PdfScrollListener : RecyclerView.OnScrollListener
         {
             private readonly PdfViewHandler _handler;

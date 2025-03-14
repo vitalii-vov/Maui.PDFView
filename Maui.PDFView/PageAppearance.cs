@@ -2,7 +2,7 @@ namespace Maui.PDFView;
 
 public partial class PageAppearance
 {
-    public bool ShadowEnabled { get; set; }
+    public bool ShadowEnabled { get; set; } = true;
     public Thickness Margin { get; set; }
     public Thickness Crop { get; set; }
 }
