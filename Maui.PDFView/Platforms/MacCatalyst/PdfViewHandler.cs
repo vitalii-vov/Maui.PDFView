@@ -17,6 +17,7 @@ namespace Maui.PDFView.Platforms.MacCatalyst
         };
 
         private string _fileName;
+        private PageAppearance _appearance = PageAppearance.Default;
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -44,7 +45,13 @@ namespace Maui.PDFView.Platforms.MacCatalyst
         static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
         {
             var appearance = pdfView.PageAppearance ?? PageAppearance.Default;
-            
+            handler._appearance = appearance;
+
+            SetPageAppearance(handler, appearance);
+        }
+
+        private static void SetPageAppearance(PdfViewHandler handler, PageAppearance appearance)
+        {
             //  set shadow
             if (OperatingSystem.IsIOSVersionAtLeast(12, 0))
                 handler.PlatformView.PageShadowsEnabled = appearance.ShadowEnabled;
@@ -75,13 +82,21 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             RenderPages();
             return base.GetDesiredSize(widthConstraint, heightConstraint);
         }
+        
+        protected override void DisconnectHandler(PdfKit.PdfView platformView)
+        {
+            NSNotificationCenter.DefaultCenter.RemoveObserver(PlatformView);
+            base.DisconnectHandler(platformView);
+        }
 
-        void RenderPages()
+        private void RenderPages()
         {
             if (_fileName == null)
                 return;
 
-            PlatformView.Document = new PdfDocument(NSData.FromFile(_fileName));
+            var doc = new PdfDocument(NSData.FromFile(_fileName));
+            CropPages(doc, _appearance.Crop);
+            PlatformView.Document = doc;
             
             PlatformView.AutosizesSubviews = true;
             PlatformView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleBottomMargin;
@@ -111,10 +126,24 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)(document.GetPageIndex(currentPage) + 1), (int)document.PageCount));
         }
 
-        protected override void DisconnectHandler(PdfKit.PdfView platformView)
+        
+        
+        private void CropPages(PdfKit.PdfDocument pdfdoc, Thickness cropBounds)
         {
-            NSNotificationCenter.DefaultCenter.RemoveObserver(PlatformView);
-            base.DisconnectHandler(platformView);
+            if (cropBounds.IsEmpty) 
+                return;
+
+            for (var i = 0; i < pdfdoc.PageCount; ++i)
+            {
+                var page = pdfdoc.GetPage(i);
+
+                var boundW = cropBounds.Left + cropBounds.Right;
+                var boundH = cropBounds.Top + cropBounds.Bottom;
+
+                var boxType = PdfKit.PdfDisplayBox.Crop;
+                var oldBounds = page.GetBoundsForBox(boxType);
+                page.SetBoundsForBox(new CoreGraphics.CGRect(cropBounds.Left, cropBounds.Top, oldBounds.Width - boundW, oldBounds.Height - boundH), boxType);
+            }
         }
     }
 }
