@@ -62,9 +62,13 @@ public static class MauiProgram
         <!--
             Margin          — Page Margin
             ShadowEnabled   — Page Shadow
+            Crop            — Cuts off a portion within the page
         -->
         <pdf:PdfView.PageAppearance>
-            <pdf:PageAppearance Margin="16,8" ShadowEnabled="True" />
+            <pdf:PageAppearance 
+                Margin="16,8" 
+                ShadowEnabled="True"
+                Crop="64,32"/>
         </pdf:PdfView.PageAppearance>
 
     </pdf:PdfView>
