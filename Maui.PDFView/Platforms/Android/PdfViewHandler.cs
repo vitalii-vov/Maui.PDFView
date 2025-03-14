@@ -138,10 +138,10 @@ namespace Maui.PDFView.Platforms.Android
             int pageWidth = page.Width;
             int pageHeight = page.Height;
                 
-            var cropLeft = (int) (bounds.Left );
-            int cropTop = (int) (bounds.Top );
-            int cropRight = pageWidth - (int) (bounds.Right ) + cropLeft;
-            int cropBottom = pageHeight - (int) (bounds.Bottom ) + cropTop;
+            var cropLeft = (int) bounds.Left;
+            int cropTop = (int) bounds.Top;
+            int cropRight = pageWidth - (int) bounds.Right;
+            int cropBottom = pageHeight - (int) bounds.Bottom;
 
             // Create a matrix for shifting and scaling
             Matrix matrix = new Matrix();
