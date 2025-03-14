@@ -17,7 +17,7 @@ namespace Maui.PDFView.Platforms.iOS
         };
 
         private string _fileName;
-        private PageAppearance _appearance = PageAppearance.Default;
+        private PageAppearance _appearance = new();
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -44,7 +44,7 @@ namespace Maui.PDFView.Platforms.iOS
 
         static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
         {
-            var appearance = pdfView.PageAppearance ?? PageAppearance.Default;
+            var appearance = pdfView.PageAppearance ?? new PageAppearance();
             handler._appearance = appearance;
 
             SetPageAppearance(handler, appearance);

@@ -51,7 +51,7 @@ namespace Maui.PDFView.Platforms.Android
         
         static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
         {
-            handler._pageAppearance = pdfView.PageAppearance ?? PageAppearance.Default;
+            handler._pageAppearance = pdfView.PageAppearance ?? new PageAppearance();
         }
 
         protected override FrameLayout CreatePlatformView()

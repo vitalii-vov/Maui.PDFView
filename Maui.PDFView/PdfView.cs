@@ -28,7 +28,7 @@ namespace Maui.PDFView
                 propertyName: nameof(PageAppearance),
                 returnType: typeof(PageAppearance), 
                 declaringType: typeof(PdfView),
-                defaultValue: PageAppearance.Default);
+                defaultValue: null);
 
         public static readonly BindableProperty PageChangedCommandProperty = BindableProperty.Create(
                 propertyName: nameof(PageChangedCommand),
