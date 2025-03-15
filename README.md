@@ -1,19 +1,19 @@
 # Maui.PDFView
-Library for display PDF files in .NET MAUI on Android, iOS and Windows
+Library for display PDF files in .NET MAUI on Android, iOS, MacOS and Windows
 
 ![NuGet Downloads](https://img.shields.io/nuget/dt/Vitvov.Maui.PDFView?style=for-the-badge)
+![last commit](https://img.shields.io/github/last-commit/vitalii-vov/Maui.PDFView?style=for-the-badge)
+
+| .NET 8.0 | .NET MAUI |
+| :------- | :-------  |
+
+| Platform  | Android | iOS | MacOS | Windows |
+| :-------- | :-----  | :-- | :---- | :------ |
+| Supported | ✅      | ✅   | ✅    | ✅      |
 
 https://github.com/vitalii-vov/Maui.PDFView/assets/71486507/4977ede8-c8db-454f-930d-ba2ec704f16d
 
-.NET 8.0
-.NET MAUI
 
-| Platform     | Supported |
-| :----------- | :-------  |
-| Android      | ✅        |
-| iOS          | ✅        |
-| MacOS        | ✅        |
-| Windows      | ✅        |
 
 ## Installation
 ```
@@ -21,6 +21,15 @@ Install-Package Vitvov.Maui.PDFView
 ```
 
 ## Usage
+
+> [!IMPORTANT]
+> To use a component with `.net9` add `HandlerProperties.DisconnectPolicy="Manual"` to `PdfView`
+> ```XAML
+> <pdf:PdfView
+>     HandlerProperties.DisconnectPolicy="Manual" />
+> ```
+
+
 ```C#
 public static class MauiProgram
 {
@@ -48,29 +57,16 @@ public static class MauiProgram
     xmlns:pdf="clr-namespace:Maui.PDFView;assembly=Maui.PDFView">
 
     <!--
-    IsHorizontal        — Display PDF horizontally
-    Uri                 — Path to the file on the device
-    MaxZoom             — Max zoom level
-    PageChangedCommand  — event of changing the current page
+    IsHorizontal — display PDF horizontally
+    Uri — path to the file on the device
+    MaxZoom — max zoom level
+    PageChangedCommand — event of changing the current page
     -->
     <pdf:PdfView
         IsHorizontal="{Binding IsHorizontal}"
         Uri="{Binding PdfSource}"
         MaxZoom="4"
         PageChangedCommand="{Binding PageChangedCommand}">
-
-        <!--
-            Margin          — Page Margin
-            ShadowEnabled   — Page Shadow
-            Crop            — Cuts off a portion within the page
-        -->
-        <pdf:PdfView.PageAppearance>
-            <pdf:PageAppearance 
-                Margin="16,8" 
-                ShadowEnabled="True"
-                Crop="64,32"/>
-        </pdf:PdfView.PageAppearance>
-
     </pdf:PdfView>
 
 </ContentPage>
@@ -94,4 +90,24 @@ internal partial class MainPageViewModel : ObservableObject
         }
     }
 }
+```
+
+## Personalization
+You can customize the way pages are displayed by modifying the `PageAppearance` property in the `PdfView` component.
+```xaml
+<pdf:PdfView Uri="{Binding PdfSource}">
+
+    <!--
+    Margin — Adds indents around pages
+    ShadowEnabled — Adds a shadow to each page
+    Crop — crops out the part around the page
+    -->
+    <pdf:PdfView.PageAppearance>
+        <pdf:PageAppearance 
+            Margin="16,8" 
+            ShadowEnabled="True"
+            Crop="64,32"/>
+    </pdf:PdfView.PageAppearance>
+
+</pdf:PdfView>
 ```
