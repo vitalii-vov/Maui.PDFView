@@ -5,8 +5,8 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using Windows.Data.Pdf;
+using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
@@ -26,7 +26,7 @@ namespace Maui.PDFView.Platforms.Windows
         private StackPanel _stack;
         private string _fileName;
 
-        private PageAppearance? _pageAppearance;
+        private PageAppearance _pageAppearance = new PageAppearance();
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -52,7 +52,7 @@ namespace Maui.PDFView.Platforms.Windows
 
         static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
         {
-            handler._pageAppearance = pdfView.PageAppearance ?? PageAppearance.Default;
+            handler._pageAppearance = pdfView.PageAppearance ?? new PageAppearance();
         }
 
         protected override ScrollViewer CreatePlatformView()
@@ -89,21 +89,35 @@ namespace Maui.PDFView.Platforms.Windows
             for (uint i = 0; i < pdfDoc.PageCount; i++)
             {
                 var page = pdfDoc.GetPage(i);
+                var bundle = _pageAppearance?.Crop ?? new Microsoft.Maui.Thickness();
 
-                BitmapImage bitmap = new();
-                using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
+                using (InMemoryRandomAccessStream stream = new())
                 {
-                    await page.RenderToStreamAsync(stream);
-                    await bitmap.SetSourceAsync(stream);
-                }
+                    double logicalDpi = DeviceDisplay.MainDisplayInfo.Density * 96;
+                    var k = logicalDpi / 72.0;
+                    var renderOptions = new PdfPageRenderOptions
+                    {
+                        SourceRect = new(
+                            bundle.Left * k,
+                            bundle.Top * k,
+                            page.Size.Width - (bundle.Right * k) - (bundle.Left * k),
+                            page.Size.Height - (bundle.Bottom * k) - (bundle.Top * k)
+                        )
+                    };
 
-                _stack.Children.Add(MakePage(bitmap, _pageAppearance));
+                    await page.RenderToStreamAsync(stream, renderOptions);
+
+                    BitmapImage bitmap = new();
+                    await bitmap.SetSourceAsync(stream);
+
+                    _stack.Children.Add(MakePage(bitmap, _pageAppearance));
+                }
             }
         }
 
         private UIElement MakePage(BitmapImage image, PageAppearance pageAppearance)
         {
-            var appearance = pageAppearance ?? PageAppearance.Default;
+            var appearance = pageAppearance ?? new PageAppearance();
             var am = appearance.Margin;
 
             var border = new Microsoft.UI.Xaml.Controls.Grid

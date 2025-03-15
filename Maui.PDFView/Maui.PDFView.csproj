@@ -21,7 +21,7 @@
 		<Description>MAUI library for displaying PDF files</Description>
 		<PackageProjectUrl>https://github.com/vitalii-vov/Maui.PDFView</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
