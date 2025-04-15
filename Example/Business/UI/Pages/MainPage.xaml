@@ -63,13 +63,6 @@
             PageChangedCommand="{Binding PageChangedCommand}"
             Uri="{Binding PdfSource}">
 
-            <pdf:PdfView.PageAppearance>
-                <pdf:PageAppearance
-                    Margin="16"
-                    Crop="64,32"
-                    ShadowEnabled="True" />
-            </pdf:PdfView.PageAppearance>
-
         </pdf:PdfView>
     </Grid>
 
