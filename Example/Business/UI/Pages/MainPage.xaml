@@ -61,9 +61,14 @@
             IsHorizontal="{Binding IsHorizontal}"
             MaxZoom="{Binding MaxZoom}"
             PageChangedCommand="{Binding PageChangedCommand}"
-            Uri="{Binding PdfSource}">
-
-        </pdf:PdfView>
+            Uri="{Binding PdfSource}"/>
+        
+        <Label Grid.Row="1"
+               VerticalOptions="Start"
+               Text="{Binding Mode=OneWay, Path=PagePosition}"
+               BackgroundColor="WhiteSmoke"
+               HorizontalOptions="Start"
+               TextColor="Black"/>
     </Grid>
 
 </ContentPage>
