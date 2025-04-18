@@ -76,7 +76,7 @@ namespace Maui.PDFView.Platforms.Android
 
         public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
         {
-            RenderPages();
+            //RenderPages();
             return base.GetDesiredSize(widthConstraint, heightConstraint);
         }
 

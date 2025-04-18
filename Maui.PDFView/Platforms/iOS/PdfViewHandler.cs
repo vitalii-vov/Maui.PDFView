@@ -79,7 +79,7 @@ namespace Maui.PDFView.Platforms.iOS
 
         public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
         {
-            RenderPages();
+            //RenderPages();
             return base.GetDesiredSize(widthConstraint, heightConstraint);
         }
         
