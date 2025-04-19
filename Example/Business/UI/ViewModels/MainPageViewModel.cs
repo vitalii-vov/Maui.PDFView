@@ -23,8 +23,7 @@ namespace Example.Business.UI.ViewModels
 
         [RelayCommand] private void ChangeUri()
         {
-            //PdfSource = _repository.GetPdfSource();
-            PagePosition = "Boom!";
+            PdfSource = _repository.GetPdfSource();
         }
 
         [RelayCommand] private void PageChanged(PageChangedEventArgs args)

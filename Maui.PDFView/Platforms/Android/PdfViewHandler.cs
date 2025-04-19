@@ -7,6 +7,7 @@ using Microsoft.Maui.Handlers;
 using Android.Widget;
 using Android.Views;
 using Maui.PDFView.Events;
+using Maui.PDFView.Helpers;
 
 namespace Maui.PDFView.Platforms.Android
 {
@@ -23,6 +24,7 @@ namespace Maui.PDFView.Platforms.Android
         private readonly ScreenHelper _screenHelper = new();
         private ZoomableRecyclerView _recycleView;
         private string _fileName;
+        private readonly DesiredSizeHelper _sizeHelper = new();
         
         private PageAppearance? _pageAppearance;
 
@@ -76,7 +78,13 @@ namespace Maui.PDFView.Platforms.Android
 
         public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
         {
-            RenderPages();
+            if (_sizeHelper.UpdateSize(widthConstraint, heightConstraint))
+            {
+                //  Change the behavior of the component if the size of the selected area has been changed
+                //  (for example, when the screen is flipped or the screen is split)
+                RenderPages();
+            }
+            
             return base.GetDesiredSize(widthConstraint, heightConstraint);
         }
 
