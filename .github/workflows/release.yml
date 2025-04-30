@@ -2,13 +2,10 @@ name: NuGet
 
 on:
   push:
-    branches:
-      - main  # for test
-  # push:
-  #   tags:
-  #     - 'v[0-9]+.[0-9]+.[0-9]+'          # release tag, like v1.2.3
-  #     - 'v[0-9]+.[0-9]+.[0-9]+-alpha*'   # alpha tag, like v1.2.3-alpha, v1.2.3-alpha1
-  #     - 'v[0-9]+.[0-9]+.[0-9]+-beta*'    # beta tag, like v1.2.3-beta2
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'          # release tag, like v1.2.3
+      - 'v[0-9]+.[0-9]+.[0-9]+-alpha*'   # alpha tag, like v1.2.3-alpha, v1.2.3-alpha1
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta*'    # beta tag, like v1.2.3-beta2
   
   workflow_dispatch:  # manual run
 
