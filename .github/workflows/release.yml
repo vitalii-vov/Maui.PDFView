@@ -20,10 +20,13 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.x'
+          dotnet-version: '8.0.x'
 
       - name: Verify .NET SDK version
         run: dotnet --version
+
+      - name: Install .NET Build Tools for MAUI
+        run: dotnet workload install maui
 
       - name: Restore dependencies
         run: dotnet restore
