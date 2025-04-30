@@ -25,8 +25,8 @@ jobs:
       - name: Verify .NET SDK version
         run: dotnet --version
 
-      - name: Install .NET Build Tools for MAUI
-        run: dotnet workload install maui
+      #- name: Install .NET Build Tools for MAUI
+      #  run: dotnet workload install maui
 
       - name: Restore dependencies
         run: dotnet restore
