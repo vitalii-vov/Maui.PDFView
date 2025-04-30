@@ -32,7 +32,7 @@ jobs:
         run: dotnet restore
 
       - name: Build project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build Maui.PDFView/Maui.PDFView.csproj --configuration Release --no-restore
 
       - name: Pack NuGet package
         run: dotnet pack Maui.PDFView/Maui.PDFView.csproj --configuration Release --no-build -o ./nupkgs
