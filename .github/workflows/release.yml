@@ -22,6 +22,9 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Verify .NET SDK version
+        run: dotnet --version
+
       - name: Restore dependencies
         run: dotnet restore
 
