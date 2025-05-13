@@ -14,6 +14,7 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
             [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
             [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
+            [nameof(IPdfView.PageNumber)] = MapPageNumber,
         };
 
         private string _fileName;
@@ -48,6 +49,11 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             handler._appearance = appearance;
 
             SetPageAppearance(handler, appearance);
+        }
+
+        static void MapPageNumber(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler.GotoPage(pdfView.PageNumber);
         }
 
         private static void SetPageAppearance(PdfViewHandler handler, PageAppearance appearance)
@@ -110,6 +116,23 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             PlatformView.AutoScales = true;
         }
 
+        private void GotoPage(uint pageNumber)
+        {
+            var document = PlatformView.Document;
+            if (document is null)
+                return;
+
+            if (pageNumber == 0 || document.PageCount <= pageNumber - 1)
+                return;
+
+            var newPage = document.GetPage((nint)pageNumber - 1);
+
+            if (newPage is null)
+                return;
+
+            PlatformView.GoToPage(newPage);
+        }
+
         private void PageChangedNotificationHandler(NSNotification notification)
         {
             var currentPage = PlatformView.CurrentPage;
@@ -120,10 +143,16 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             if (document is null)
                 return;
 
-            if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false)) 
-                return;
+            var newPage = (uint)document.GetPageIndex(currentPage) + 1;
+            if (VirtualView.PageNumber != newPage)
+            {
+                VirtualView.PageNumber = newPage;
+                
+                if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false))
+                    return;
 
-            VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)(document.GetPageIndex(currentPage) + 1), (int)document.PageCount));
+                VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)newPage, (int)document.PageCount));
+            }
         }
 
         

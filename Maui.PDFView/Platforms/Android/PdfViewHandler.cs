@@ -18,6 +18,7 @@ namespace Maui.PDFView.Platforms.Android
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
             [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
             [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
+            [nameof(IPdfView.PageNumber)] = MapPageNumber,
         };
 
         private readonly ScreenHelper _screenHelper = new();
@@ -52,6 +53,11 @@ namespace Maui.PDFView.Platforms.Android
         static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
         {
             handler._pageAppearance = pdfView.PageAppearance ?? new PageAppearance();
+        }
+
+        static void MapPageNumber(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler.GotoPage(pdfView.PageNumber);
         }
 
         protected override FrameLayout CreatePlatformView()
@@ -157,7 +163,17 @@ namespace Maui.PDFView.Platforms.Android
 
             return matrix;
         }
-        
+
+        private void GotoPage(uint pageNumber)
+        {
+            var layoutManager = (LinearLayoutManager)_recycleView.GetLayoutManager()!;
+
+            if (pageNumber == 0 || layoutManager.ItemCount <= pageNumber - 1)
+                return;
+
+            layoutManager.ScrollToPosition((int)pageNumber - 1);
+        }
+
         private class PdfScrollListener : RecyclerView.OnScrollListener
         {
             private readonly PdfViewHandler _handler;
@@ -209,8 +225,19 @@ namespace Maui.PDFView.Platforms.Android
                     }
                 }
 
-                // Execute the command if available
-                _handler.VirtualView.PageChangedCommand?.Execute(new PageChangedEventArgs(currentPage + 1, layoutManager.ItemCount));
+                if (currentPage >= 0)
+                {
+                    var newPage = (uint)currentPage + 1;
+                    if (_handler.VirtualView.PageNumber != newPage)
+                    {
+                        _handler.VirtualView.PageNumber = newPage;
+                        if (_handler.VirtualView.PageChangedCommand?.CanExecute(null) == true)
+                        {
+                            // Execute the command if available
+                            _handler.VirtualView.PageChangedCommand?.Execute(new PageChangedEventArgs((int)newPage, layoutManager.ItemCount));
+                        }
+                    }
+                }
             }
         }
     }

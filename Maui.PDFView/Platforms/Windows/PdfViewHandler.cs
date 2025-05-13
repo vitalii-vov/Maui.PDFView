@@ -1,4 +1,5 @@
 ﻿using Maui.PDFView.Events;
+using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Handlers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -20,6 +21,7 @@ namespace Maui.PDFView.Platforms.Windows
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
             [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
             [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
+            [nameof(IPdfView.PageNumber)] = MapPageNumber,
         };
 
         private ScrollViewer _scrollViewer;
@@ -54,6 +56,12 @@ namespace Maui.PDFView.Platforms.Windows
         {
             handler._pageAppearance = pdfView.PageAppearance ?? new PageAppearance();
         }
+
+        static void MapPageNumber(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler.GotoPage(pdfView.PageNumber);
+        }
+
 
         protected override ScrollViewer CreatePlatformView()
         {
@@ -151,7 +159,24 @@ namespace Maui.PDFView.Platforms.Windows
             target.Translation += new Vector3(0, 0, ZDepth);
         }
 
-        private void OnScrollViewerViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private void GotoPage(uint pageNumber)
+        {
+            var layout = (StackPanel)_scrollViewer.Content;
+            if (pageNumber == 0 || layout.Children.Count <= pageNumber - 1)
+                return;
+
+            var child = layout.Children[(int)pageNumber - 1] as FrameworkElement;
+            if (child != null)
+            {
+                var transform = child.TransformToVisual(_scrollViewer);
+                var position = transform.TransformBounds(new(0, 0, child.ActualWidth, child.ActualHeight));
+
+                //this.pageNumber = pageNumber;
+                _scrollViewer.ChangeView(child.ActualOffset.X, child.ActualOffset.Y, 1, true);
+            }
+        }
+
+        private void OnScrollViewerViewChanged(object? sender, ScrollViewerViewChangedEventArgs e)
         {
             // Get the index of the currently visible page
             var layout = (StackPanel)_scrollViewer.Content;
@@ -191,9 +216,17 @@ namespace Maui.PDFView.Platforms.Windows
             
             }
 
-            if (currentPage >= 0 && VirtualView.PageChangedCommand?.CanExecute(null) == true)
+            if (currentPage >= 0)
             {
-                VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
+                var newPage = (uint)currentPage + 1;
+                if (VirtualView.PageNumber != newPage)
+                {
+                    VirtualView.PageNumber = newPage;
+                    if (VirtualView.PageChangedCommand?.CanExecute(null) == true)
+                    {
+                        VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
+                    }
+                }
             }
         }
     }

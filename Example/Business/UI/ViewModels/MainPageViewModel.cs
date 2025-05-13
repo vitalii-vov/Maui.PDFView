@@ -14,6 +14,7 @@ namespace Example.Business.UI.ViewModels
         [ObservableProperty] private string _pdfSource;
         [ObservableProperty] private bool _isHorizontal;
         [ObservableProperty] private float _maxZoom = 4;
+        [ObservableProperty] private uint _pageNumber = 1;
 
         [RelayCommand] private void Appearing()
         {
@@ -29,5 +30,6 @@ namespace Example.Business.UI.ViewModels
         {
             Debug.WriteLine($"Current page: {args.CurrentPage} of {args.TotalPages}");
         }
+
     }
 }
