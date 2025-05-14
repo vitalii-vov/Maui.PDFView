@@ -77,17 +77,16 @@
             IsHorizontal="{Binding IsHorizontal}"
             MaxZoom="{Binding MaxZoom}"
             PageChangedCommand="{Binding PageChangedCommand}"
-            PageNumber="{Binding PageNumber, Mode=TwoWay}"
-            Uri="{Binding PdfSource}">
-            
-            <pdf:PdfView.PageAppearance>
-                <pdf:PageAppearance
-                    Margin="16"
-                    Crop="64,32"
-                    ShadowEnabled="True" />
-            </pdf:PdfView.PageAppearance>
-
-        </pdf:PdfView>
+	        PageNumber="{Binding PageNumber, Mode=TwoWay}"
+            Uri="{Binding PdfSource}"/>
+        
+        <Label 
+            Grid.Row="1"
+            VerticalOptions="Start"
+            Text="{Binding Mode=OneWay, Path=PagePosition}"
+            BackgroundColor="WhiteSmoke"
+            HorizontalOptions="Start"
+            TextColor="Black"/>
     </Grid>
 
 </ContentPage>

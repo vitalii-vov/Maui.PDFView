@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using Maui.PDFView.Events;
+using Maui.PDFView.Helpers;
 using Microsoft.Maui.Handlers;
 using PdfKit;
 using UIKit;
@@ -19,6 +20,7 @@ namespace Maui.PDFView.Platforms.MacCatalyst
 
         private string _fileName;
         private PageAppearance _appearance = new();
+        private readonly DesiredSizeHelper _sizeHelper = new();
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -85,7 +87,13 @@ namespace Maui.PDFView.Platforms.MacCatalyst
 
         public override Size GetDesiredSize(double widthConstraint, double heightConstraint)
         {
-            RenderPages();
+            if (_sizeHelper.UpdateSize(widthConstraint, heightConstraint))
+            {
+                //  Change the behavior of the component if the size of the selected area has been changed
+                //  (for example, when the screen is flipped or the screen is split)
+                RenderPages();
+            }
+            
             return base.GetDesiredSize(widthConstraint, heightConstraint);
         }
         
@@ -145,18 +153,15 @@ namespace Maui.PDFView.Platforms.MacCatalyst
 
             var newPage = (uint)document.GetPageIndex(currentPage) + 1;
             if (VirtualView.PageNumber != newPage)
-            {
                 VirtualView.PageNumber = newPage;
-                
-                if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false))
-                    return;
 
-                VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)newPage, (int)document.PageCount));
-            }
+            if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false))
+                return;
+
+            VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)newPage, (int)document.PageCount));
+
         }
 
-        
-        
         private void CropPages(PdfKit.PdfDocument pdfdoc, Thickness cropBounds)
         {
             if (cropBounds.IsEmpty) 

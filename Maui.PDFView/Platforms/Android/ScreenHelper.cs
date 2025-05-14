@@ -15,12 +15,15 @@ namespace Maui.PDFView.Platforms.Android
         public void Invalidate()
         {
             IWindowManager windowManager = global::Android.App.Application.Context.GetSystemService(global::Android.Content.Context.WindowService).JavaCast<IWindowManager>();
-
+            
             if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
             {
-                _widthPixels = windowManager.CurrentWindowMetrics.Bounds.Width();
-                _heightPixels = windowManager.CurrentWindowMetrics.Bounds.Height();
-                _density = windowManager.CurrentWindowMetrics.Density;
+                var bounds = windowManager.CurrentWindowMetrics.Bounds;
+                _widthPixels = bounds.Width();
+                _heightPixels = bounds.Height();
+                
+                var displayMetrics = global::Android.App.Application.Context.Resources.DisplayMetrics;
+                _density = displayMetrics.Density;
                 return;
             }
 

@@ -220,13 +220,10 @@ namespace Maui.PDFView.Platforms.Windows
             {
                 var newPage = (uint)currentPage + 1;
                 if (VirtualView.PageNumber != newPage)
-                {
                     VirtualView.PageNumber = newPage;
-                    if (VirtualView.PageChangedCommand?.CanExecute(null) == true)
-                    {
-                        VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
-                    }
-                }
+
+                if (VirtualView.PageChangedCommand?.CanExecute(null) == true)
+                    VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
             }
         }
     }

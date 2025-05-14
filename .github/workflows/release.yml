@@ -1,0 +1,44 @@
+name: NuGet
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'          # release tag, like v1.2.3
+      - 'v[0-9]+.[0-9]+.[0-9]+-alpha*'   # alpha tag, like v1.2.3-alpha, v1.2.3-alpha1
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta*'    # beta tag, like v1.2.3-beta2
+  
+  workflow_dispatch:  # manual run
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Verify .NET SDK version
+        run: dotnet --version
+
+      #- name: Install .NET Build Tools for MAUI
+      #  run: dotnet workload install maui
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build Maui.PDFView/Maui.PDFView.csproj --configuration Release --no-restore
+
+      - name: Pack NuGet package
+        run: dotnet pack Maui.PDFView/Maui.PDFView.csproj --configuration Release --no-build -o ./nupkgs
+
+      - name: Upload NuGet package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./nupkgs
