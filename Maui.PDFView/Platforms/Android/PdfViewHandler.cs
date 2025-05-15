@@ -172,8 +172,13 @@ namespace Maui.PDFView.Platforms.Android
             return matrix;
         }
 
+        private bool isScrolling;
+
         private void GotoPage(uint pageNumber)
         {
+            if (isScrolling)
+                return;
+
             var layoutManager = (LinearLayoutManager)_recycleView.GetLayoutManager()!;
 
             if (pageNumber == 0 || layoutManager.ItemCount <= pageNumber - 1)
@@ -237,7 +242,11 @@ namespace Maui.PDFView.Platforms.Android
                 {
                     var newPage = (uint)currentPage + 1;
                     if (_handler.VirtualView.PageNumber != newPage)
+                    {
+                        _handler.isScrolling = true;
                         _handler.VirtualView.PageNumber = newPage;
+                        _handler.isScrolling = false;
+                    }
 
                     if (_handler.VirtualView.PageChangedCommand?.CanExecute(null) == true)
                         // Execute the command if available

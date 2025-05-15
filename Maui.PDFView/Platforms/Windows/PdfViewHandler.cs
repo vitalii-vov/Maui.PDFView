@@ -159,8 +159,13 @@ namespace Maui.PDFView.Platforms.Windows
             target.Translation += new Vector3(0, 0, ZDepth);
         }
 
+        private bool isScrolling;
+
         private void GotoPage(uint pageNumber)
         {
+            if (isScrolling)
+                return;
+
             var layout = (StackPanel)_scrollViewer.Content;
             if (pageNumber == 0 || layout.Children.Count <= pageNumber - 1)
                 return;
@@ -171,8 +176,7 @@ namespace Maui.PDFView.Platforms.Windows
                 var transform = child.TransformToVisual(_scrollViewer);
                 var position = transform.TransformBounds(new(0, 0, child.ActualWidth, child.ActualHeight));
 
-                //this.pageNumber = pageNumber;
-                _scrollViewer.ChangeView(child.ActualOffset.X, child.ActualOffset.Y, 1, true);
+                _scrollViewer.ScrollToVerticalOffset(_scrollViewer.ZoomFactor*child.ActualOffset.Y);
             }
         }
 
@@ -220,7 +224,11 @@ namespace Maui.PDFView.Platforms.Windows
             {
                 var newPage = (uint)currentPage + 1;
                 if (VirtualView.PageNumber != newPage)
+                {
+                    isScrolling = true;
                     VirtualView.PageNumber = newPage;
+                    isScrolling = false;
+                }
 
                 if (VirtualView.PageChangedCommand?.CanExecute(null) == true)
                     VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));

@@ -124,8 +124,13 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             PlatformView.AutoScales = true;
         }
 
+        private bool isScrolling;
+
         private void GotoPage(uint pageNumber)
         {
+            if (isScrolling)
+                return;
+
             var document = PlatformView.Document;
             if (document is null)
                 return;
@@ -153,7 +158,11 @@ namespace Maui.PDFView.Platforms.MacCatalyst
 
             var newPage = (uint)document.GetPageIndex(currentPage) + 1;
             if (VirtualView.PageNumber != newPage)
+            {
+                isScrolling = true;
                 VirtualView.PageNumber = newPage;
+                isScrolling = false;
+            }
 
             if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false))
                 return;
