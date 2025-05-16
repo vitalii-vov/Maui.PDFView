@@ -8,7 +8,7 @@ namespace Maui.PDFView
         bool IsHorizontal { get; set; }
         float MaxZoom { get; set; }
         PageAppearance? PageAppearance { get; set; }
-        uint PageNumber { get; set; }
+        uint PageIndex { get; set; }
 
         ICommand PageChangedCommand { get; set; }
     }

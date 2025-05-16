@@ -53,14 +53,14 @@
                 Grid.Column="2"
                 FontSize="Caption"
                 HorizontalTextAlignment="Center"
-                Text="{Binding PageNumber, StringFormat='Page number is {0}'}" />
+                Text="{Binding PageIndex, StringFormat='Page index is {0}'}" />
 
             <Stepper
                 Grid.Row="1"
                 Grid.Column="2"
-                Maximum="5"
-                Minimum="1"
-                Value="{Binding PageNumber, Mode=TwoWay}" />
+                Maximum="{Binding MaxPageIndex}"
+                Minimum="0"
+                Value="{Binding PageIndex, Mode=TwoWay}" />
 
             <Button
                 Grid.Row="0"
@@ -77,7 +77,7 @@
             IsHorizontal="{Binding IsHorizontal}"
             MaxZoom="{Binding MaxZoom}"
             PageChangedCommand="{Binding PageChangedCommand}"
-	        PageNumber="{Binding PageNumber, Mode=TwoWay}"
+	        PageIndex="{Binding PageIndex, Mode=TwoWay}"
             Uri="{Binding PdfSource}"/>
         
         <Label 

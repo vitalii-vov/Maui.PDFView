@@ -15,7 +15,8 @@ namespace Example.Business.UI.ViewModels
         [ObservableProperty] private bool _isHorizontal;
         [ObservableProperty] private float _maxZoom = 4;
         [ObservableProperty] private string _pagePosition;
-        [ObservableProperty] private uint _pageNumber = 1;
+        [ObservableProperty] private uint _pageIndex = 0;
+        [ObservableProperty] private uint _maxPageIndex = uint.MaxValue;
 
         [RelayCommand] private void Appearing()
         {
@@ -27,8 +28,18 @@ namespace Example.Business.UI.ViewModels
             PdfSource = _repository.GetPdfSource();
         }
 
-        [RelayCommand] private void PageChanged(PageChangedEventArgs args)
+        //private bool IsPageChangedExcutable() => false;
+        //[RelayCommand(CanExecute = nameof(IsPageChangedExcutable))]
+        //private void PageChanged(PageChangedEventArgs args)
+        //{
+        //    PagePosition = $"{args.CurrentPage} of {args.TotalPages}";
+        //    Debug.WriteLine($"Current page: {args.CurrentPage} of {args.TotalPages}");
+        //}
+
+        [RelayCommand]
+        private void PageChanged(PageChangedEventArgs args)
         {
+            MaxPageIndex = (uint)args.TotalPages - 1;
             PagePosition = $"{args.CurrentPage} of {args.TotalPages}";
             Debug.WriteLine($"Current page: {args.CurrentPage} of {args.TotalPages}");
         }

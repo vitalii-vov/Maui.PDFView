@@ -36,8 +36,8 @@ namespace Maui.PDFView
                 declaringType: typeof(PdfView),
                 defaultValue: default(ICommand));
 
-        public static readonly BindableProperty PageNumberProperty = BindableProperty.Create(
-                propertyName: nameof(PageNumber),
+        public static readonly BindableProperty PageIndexProperty = BindableProperty.Create(
+                propertyName: nameof(PageIndex),
                 returnType: typeof(uint),
                 declaringType: typeof(PdfView),
                 defaultValue: (uint)0, defaultBindingMode: BindingMode.TwoWay);
@@ -72,10 +72,10 @@ namespace Maui.PDFView
             set => SetValue(PageChangedCommandProperty, value);
         }
 
-        public uint PageNumber
+        public uint PageIndex
         {
-            get => (uint)GetValue(PageNumberProperty);
-            set => SetValue(PageNumberProperty, value);
+            get => (uint)GetValue(PageIndexProperty);
+            set => SetValue(PageIndexProperty, value);
         }
 
         private static void OnMaxZoomPropertyChanged(BindableObject bindable, object oldValue, object newValue)
