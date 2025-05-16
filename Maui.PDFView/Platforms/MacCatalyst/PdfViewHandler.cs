@@ -135,7 +135,7 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             if (document is null)
                 return;
 
-            if (pageIndex == 0 || document.PageCount <= pageIndex - 1)
+            if (pageIndex >= document.PageCount)
                 return;
 
             var newPage = document.GetPage((nint)pageIndex);

@@ -226,23 +226,20 @@ namespace Maui.PDFView.Platforms.Windows
             
             }
 
-            if (currentPage >= 0)
+            var newPageIndex = (uint)currentPage;
+            if (isPageIndexLocked)
             {
-                var newPageIndex = (uint)currentPage;
-                if (isPageIndexLocked)
-                {
-                    isPageIndexLocked = false;
-                }
-                else if (VirtualView.PageIndex != newPageIndex)
-                {
-                    isScrolling = true;
-                    VirtualView.PageIndex = newPageIndex;
-                    isScrolling = false;
-                }
-
-                if (VirtualView.PageChangedCommand?.CanExecute(null) == true)
-                    VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
+                isPageIndexLocked = false;
             }
+            else if (VirtualView.PageIndex != newPageIndex)
+            {
+                isScrolling = true;
+                VirtualView.PageIndex = newPageIndex;
+                isScrolling = false;
+            }
+
+            if (VirtualView.PageChangedCommand?.CanExecute(null) == true)
+                VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
         }
     }
 }
