@@ -15,6 +15,7 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
             [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
             [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
+            [nameof(IPdfView.PageIndex)] = MapPageIndex,
         };
 
         private string _fileName;
@@ -50,6 +51,11 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             handler._appearance = appearance;
 
             SetPageAppearance(handler, appearance);
+        }
+
+        static void MapPageIndex(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler.GotoPage(pdfView.PageIndex);
         }
 
         private static void SetPageAppearance(PdfViewHandler handler, PageAppearance appearance)
@@ -118,6 +124,28 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             PlatformView.AutoScales = true;
         }
 
+        private bool isScrolling;
+
+        private void GotoPage(uint pageIndex)
+        {
+            if (isScrolling)
+                return;
+
+            var document = PlatformView.Document;
+            if (document is null)
+                return;
+
+            if (pageIndex >= document.PageCount)
+                return;
+
+            var newPage = document.GetPage((nint)pageIndex);
+
+            if (newPage is null)
+                return;
+
+            PlatformView.GoToPage(newPage);
+        }
+
         private void PageChangedNotificationHandler(NSNotification notification)
         {
             var currentPage = PlatformView.CurrentPage;
@@ -128,12 +156,21 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             if (document is null)
                 return;
 
-            if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false)) 
+            var newPageIndex = (uint)document.GetPageIndex(currentPage);
+            if (VirtualView.PageIndex != newPageIndex)
+            {
+                isScrolling = true;
+                VirtualView.PageIndex = newPageIndex;
+                isScrolling = false;
+            }
+
+            if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false))
                 return;
 
-            VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)(document.GetPageIndex(currentPage) + 1), (int)document.PageCount));
+            VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs((int)newPageIndex+1, (int)document.PageCount));
+
         }
-        
+
         private void CropPages(PdfKit.PdfDocument pdfdoc, Thickness cropBounds)
         {
             if (cropBounds.IsEmpty) 

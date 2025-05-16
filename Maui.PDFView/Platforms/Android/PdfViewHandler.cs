@@ -19,6 +19,7 @@ namespace Maui.PDFView.Platforms.Android
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
             [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
             [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
+            [nameof(IPdfView.PageIndex)] = MapPageIndex,
         };
 
         private readonly ScreenHelper _screenHelper = new();
@@ -54,6 +55,11 @@ namespace Maui.PDFView.Platforms.Android
         static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
         {
             handler._pageAppearance = pdfView.PageAppearance ?? new PageAppearance();
+        }
+
+        static void MapPageIndex(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler.GotoPage(pdfView.PageIndex);
         }
 
         protected override FrameLayout CreatePlatformView()
@@ -165,7 +171,24 @@ namespace Maui.PDFView.Platforms.Android
 
             return matrix;
         }
-        
+
+        private bool isScrolling;
+        private bool isPageIndexLocked;
+
+        private void GotoPage(uint pageIndex)
+        {
+            if (isScrolling)
+                return;
+
+            var layoutManager = (LinearLayoutManager)_recycleView.GetLayoutManager()!;
+
+            if (pageIndex >= layoutManager.ItemCount)
+                return;
+
+            isPageIndexLocked = true;
+            layoutManager.ScrollToPosition((int)pageIndex);
+        }
+
         private class PdfScrollListener : RecyclerView.OnScrollListener
         {
             private readonly PdfViewHandler _handler;
@@ -217,8 +240,21 @@ namespace Maui.PDFView.Platforms.Android
                     }
                 }
 
-                // Execute the command if available
-                _handler.VirtualView.PageChangedCommand?.Execute(new PageChangedEventArgs(currentPage + 1, layoutManager.ItemCount));
+                var newPageIndex = (uint)currentPage;
+                if (_handler.isPageIndexLocked)
+                {
+                    _handler.isPageIndexLocked = false;
+                }
+                else if (_handler.VirtualView.PageIndex != newPageIndex)
+                {
+                    _handler.isScrolling = true;
+                    _handler.VirtualView.PageIndex = newPageIndex;
+                    _handler.isScrolling = false;
+                }
+
+                if (_handler.VirtualView.PageChangedCommand?.CanExecute(null) == true)
+                    // Execute the command if available
+                    _handler.VirtualView.PageChangedCommand?.Execute(new PageChangedEventArgs(currentPage + 1, layoutManager.ItemCount));
             }
         }
     }
