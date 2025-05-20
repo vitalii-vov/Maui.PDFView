@@ -28,16 +28,7 @@ namespace Example.Business.UI.ViewModels
             PdfSource = _repository.GetPdfSource();
         }
 
-        //private bool IsPageChangedExcutable() => false;
-        //[RelayCommand(CanExecute = nameof(IsPageChangedExcutable))]
-        //private void PageChanged(PageChangedEventArgs args)
-        //{
-        //    PagePosition = $"{args.CurrentPage} of {args.TotalPages}";
-        //    Debug.WriteLine($"Current page: {args.CurrentPage} of {args.TotalPages}");
-        //}
-
-        [RelayCommand]
-        private void PageChanged(PageChangedEventArgs args)
+        [RelayCommand] private void PageChanged(PageChangedEventArgs args)
         {
             MaxPageIndex = (uint)args.TotalPages - 1;
             PagePosition = $"{args.CurrentPage} of {args.TotalPages}";

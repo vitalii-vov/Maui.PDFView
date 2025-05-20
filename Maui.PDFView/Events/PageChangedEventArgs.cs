@@ -1,5 +1,3 @@
-using System;
-
 namespace Maui.PDFView.Events
 {
     public class PageChangedEventArgs
