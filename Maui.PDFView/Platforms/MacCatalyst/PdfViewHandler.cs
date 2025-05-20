@@ -21,6 +21,8 @@ namespace Maui.PDFView.Platforms.MacCatalyst
         private string _fileName;
         private PageAppearance _appearance = new();
         private readonly DesiredSizeHelper _sizeHelper = new();
+        
+        private bool _isScrolling;
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -124,11 +126,9 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             PlatformView.AutoScales = true;
         }
 
-        private bool isScrolling;
-
         private void GotoPage(uint pageIndex)
         {
-            if (isScrolling)
+            if (_isScrolling)
                 return;
 
             var document = PlatformView.Document;
@@ -159,9 +159,9 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             var newPageIndex = (uint)document.GetPageIndex(currentPage);
             if (VirtualView.PageIndex != newPageIndex)
             {
-                isScrolling = true;
+                _isScrolling = true;
                 VirtualView.PageIndex = newPageIndex;
-                isScrolling = false;
+                _isScrolling = false;
             }
 
             if (!(VirtualView.PageChangedCommand?.CanExecute(null) ?? false))

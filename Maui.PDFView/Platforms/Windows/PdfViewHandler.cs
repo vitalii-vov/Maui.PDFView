@@ -30,6 +30,9 @@ namespace Maui.PDFView.Platforms.Windows
         private string _fileName;
 
         private PageAppearance _pageAppearance = new PageAppearance();
+        
+        private bool _isScrolling;
+        private bool _isPageIndexLocked;
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -160,12 +163,11 @@ namespace Maui.PDFView.Platforms.Windows
             target.Translation += new Vector3(0, 0, ZDepth);
         }
 
-        private bool isScrolling;
-        private bool isPageIndexLocked;
+       
 
         private void GotoPage(uint pageIndex)
         {
-            if (isScrolling)
+            if (_isScrolling)
                 return;
 
             var layout = (StackPanel)_scrollViewer.Content;
@@ -178,7 +180,7 @@ namespace Maui.PDFView.Platforms.Windows
                 var transform = child.TransformToVisual(_scrollViewer);
                 var position = transform.TransformBounds(new(0, 0, child.ActualWidth, child.ActualHeight));
 
-                isPageIndexLocked = true;
+                _isPageIndexLocked = true;
                 if (_stack.Orientation == Orientation.Vertical)
                     _scrollViewer.ScrollToVerticalOffset(_scrollViewer.ZoomFactor*child.ActualOffset.Y);
                 else
@@ -227,15 +229,15 @@ namespace Maui.PDFView.Platforms.Windows
             }
 
             var newPageIndex = (uint)currentPage;
-            if (isPageIndexLocked)
+            if (_isPageIndexLocked)
             {
-                isPageIndexLocked = false;
+                _isPageIndexLocked = false;
             }
             else if (VirtualView.PageIndex != newPageIndex)
             {
-                isScrolling = true;
+                _isScrolling = true;
                 VirtualView.PageIndex = newPageIndex;
-                isScrolling = false;
+                _isScrolling = false;
             }
 
             if (VirtualView.PageChangedCommand?.CanExecute(null) == true)

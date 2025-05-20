@@ -28,6 +28,9 @@ namespace Maui.PDFView.Platforms.Android
         private readonly DesiredSizeHelper _sizeHelper = new();
         
         private PageAppearance? _pageAppearance;
+        
+        private bool _isScrolling;
+        private bool _isPageIndexLocked;
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -172,12 +175,9 @@ namespace Maui.PDFView.Platforms.Android
             return matrix;
         }
 
-        private bool isScrolling;
-        private bool isPageIndexLocked;
-
         private void GotoPage(uint pageIndex)
         {
-            if (isScrolling)
+            if (_isScrolling)
                 return;
 
             var layoutManager = (LinearLayoutManager)_recycleView.GetLayoutManager()!;
@@ -185,8 +185,8 @@ namespace Maui.PDFView.Platforms.Android
             if (pageIndex >= layoutManager.ItemCount)
                 return;
 
-            isPageIndexLocked = true;
-            layoutManager.ScrollToPosition((int)pageIndex);
+            _isPageIndexLocked = true;
+            layoutManager.ScrollToPositionWithOffset((int)pageIndex,1);
         }
 
         private class PdfScrollListener : RecyclerView.OnScrollListener
@@ -241,15 +241,15 @@ namespace Maui.PDFView.Platforms.Android
                 }
 
                 var newPageIndex = (uint)currentPage;
-                if (_handler.isPageIndexLocked)
+                if (_handler._isPageIndexLocked)
                 {
-                    _handler.isPageIndexLocked = false;
+                    _handler._isPageIndexLocked = false;
                 }
                 else if (_handler.VirtualView.PageIndex != newPageIndex)
                 {
-                    _handler.isScrolling = true;
+                    _handler._isScrolling = true;
                     _handler.VirtualView.PageIndex = newPageIndex;
-                    _handler.isScrolling = false;
+                    _handler._isScrolling = false;
                 }
 
                 if (_handler.VirtualView.PageChangedCommand?.CanExecute(null) == true)
