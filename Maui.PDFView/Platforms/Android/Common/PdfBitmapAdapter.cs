@@ -1,42 +1,43 @@
 ﻿using Android.Graphics;
 using Android.Views;
-using Android.Widget;
 using AndroidX.CardView.Widget;
 using AndroidX.RecyclerView.Widget;
-using Microsoft.Maui.Platform;
 
 namespace Maui.PDFView.Platforms.Android.Common
 {
-    internal class PdfBitmapAdapter : RecyclerView.Adapter
+    internal class PdfBitmapAdapter(List<Bitmap> pages, PageAppearance pageAppearance) : RecyclerView.Adapter
     {
-        private PageAppearance _pageAppearance;
-        
-        public PdfBitmapAdapter(List<Bitmap> pages, PageAppearance pageAppearance)
-        {
-            Pages = pages;
-            _pageAppearance = pageAppearance;
-        }
+        public List<Bitmap> Pages { get; } = pages;
 
-        public List<Bitmap> Pages { get; }
+        public override int ItemCount => Pages.Count;
+
+        public PdfBitmapAdapter(PdfAsBitmaps pdf, PageAppearance pageAppearance)
+            : this(pdf.ToList(), pageAppearance)
+        {
+        }
         
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            global::Android.Views.View itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.card_view, parent, false);
+            var itemView = LayoutInflater
+                .From(parent.Context)?
+                .Inflate(Resource.Layout.card_view, parent, false);
 
-            if (itemView is not CardView cardView || _pageAppearance == null) 
+            if (itemView is not CardView cardView)
+            {
                 return new CardViewHolder(itemView);
+            }
             
             //  shadow
-            cardView.Elevation = _pageAppearance.ShadowEnabled ? 4 : 0;
+            cardView.Elevation = pageAppearance.ShadowEnabled ? 4 : 0;
             
             //  margin
             if (cardView.LayoutParameters is ViewGroup.MarginLayoutParams layoutParams)
             {
                 layoutParams.SetMargins(
-                    (int)_pageAppearance.Margin.Left,
-                    (int)_pageAppearance.Margin.Top,
-                    (int)_pageAppearance.Margin.Right,
-                    (int)_pageAppearance.Margin.Bottom);
+                    (int)pageAppearance.Margin.Left,
+                    (int)pageAppearance.Margin.Top,
+                    (int)pageAppearance.Margin.Right,
+                    (int)pageAppearance.Margin.Bottom);
                 cardView.LayoutParameters = layoutParams;
             }
 
@@ -48,7 +49,5 @@ namespace Maui.PDFView.Platforms.Android.Common
             CardViewHolder vh = (CardViewHolder)holder;
             vh.Image.SetImageBitmap(Pages[position]);
         }
-
-        public override int ItemCount => Pages.Count;
     }
 }

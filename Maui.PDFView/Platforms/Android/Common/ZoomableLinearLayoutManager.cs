@@ -3,19 +3,18 @@ using AndroidX.RecyclerView.Widget;
 
 namespace Maui.PDFView.Platforms.Android.Common
 {
-    internal class ZoomableLinearLayoutManager : LinearLayoutManager
+    internal class ZoomableLinearLayoutManager(Context context, int orientation, bool reverseLayout)
+        : LinearLayoutManager(context, orientation, reverseLayout)
     {
-        private ZoomableRecyclerView _recyclerView;
-
-        public ZoomableLinearLayoutManager(Context context, int orientation, bool reverseLayout) : base(context, orientation, reverseLayout)
-        {
-        }
+        private ZoomableRecyclerView? _recyclerView;
 
         public override void OnAttachedToWindow(RecyclerView? view)
         {
             base.OnAttachedToWindow(view);
             if (view is ZoomableRecyclerView zrv)
+            {
                 _recyclerView = zrv;
+            }
         }
 
         public override int ScrollVerticallyBy(int dy, RecyclerView.Recycler? recycler, RecyclerView.State? state)
