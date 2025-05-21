@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pdf="clr-namespace:Maui.PDFView;assembly=Maui.PDFView"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vms="clr-namespace:Example.Business.UI.ViewModels"
+    x:DataType="vms:MainPageViewModel"
     Title="Example">
 
     <ContentPage.Behaviors>
@@ -13,62 +15,81 @@
 
     <Grid RowDefinitions="Auto,*">
 
-        <Grid
-            ColumnDefinitions="Auto,Auto,Auto"
-            ColumnSpacing="8"
-            RowDefinitions="Auto,Auto">
-
-            <Label
-                Grid.Row="0"
-                Grid.Column="0"
-                FontSize="Caption"
-                HorizontalTextAlignment="Center"
-                Text="Horizontal"
-                VerticalOptions="Center" />
-
-            <CheckBox
-                Grid.Row="1"
-                Grid.Column="0"
-                IsChecked="{Binding IsHorizontal}"
-                VerticalOptions="Center" />
-
-            <Label
-                Grid.Row="0"
-                Grid.Column="1"
-                FontSize="Caption"
-                HorizontalTextAlignment="Center"
-                Text="{Binding MaxZoom, StringFormat='Max zoom is {0}'}" />
-
-            <Stepper
-                Grid.Row="1"
-                Grid.Column="1"
-                Maximum="5"
-                Minimum="1"
-                Value="{Binding MaxZoom}" />
-
-            <Button
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                Grid.Column="2"
-                Command="{Binding ChangeUriCommand}"
-                Text="ChangeUri"
-                VerticalOptions="Center" />
-
-        </Grid>
+        <ScrollView Orientation="Horizontal">
+            <Grid
+                ColumnDefinitions="Auto,Auto,Auto,Auto"
+                ColumnSpacing="8"
+                RowDefinitions="Auto,Auto">
+    
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    FontSize="Caption"
+                    HorizontalTextAlignment="Center"
+                    Text="Horizontal"
+                    VerticalOptions="Center" />
+    
+                <CheckBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    IsChecked="{Binding IsHorizontal}"
+                    VerticalOptions="Center" />
+    
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="Caption"
+                    HorizontalTextAlignment="Center"
+                    Text="{Binding MaxZoom, StringFormat='Max zoom is {0}'}" />
+    
+                <Stepper
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Maximum="5"
+                    Minimum="1"
+                    Value="{Binding MaxZoom}" />
+    
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    FontSize="Caption"
+                    HorizontalTextAlignment="Center"
+                    Text="{Binding PageIndex, StringFormat='Page index is {0}'}" />
+    
+                <Stepper
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Maximum="{Binding MaxPageIndex}"
+                    Minimum="0"
+                    Value="{Binding PageIndex, Mode=TwoWay}" />
+    
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="3"
+                    Command="{Binding ChangeUriCommand}"
+                    Text="ChangeUri"
+                    VerticalOptions="Center" />
+    
+            </Grid>
+        </ScrollView>
+        
 
         <pdf:PdfView
             Grid.Row="1"
             IsHorizontal="{Binding IsHorizontal}"
             MaxZoom="{Binding MaxZoom}"
             PageChangedCommand="{Binding PageChangedCommand}"
+	        PageIndex="{Binding PageIndex, Mode=TwoWay}"
             Uri="{Binding PdfSource}"/>
         
-        <Label Grid.Row="1"
-               VerticalOptions="Start"
-               Text="{Binding Mode=OneWay, Path=PagePosition}"
-               BackgroundColor="WhiteSmoke"
-               HorizontalOptions="Start"
-               TextColor="Black"/>
+        <Label 
+            Grid.Row="1"
+            VerticalOptions="Start"
+            Text="{Binding Mode=OneWay, Path=PagePosition}"
+            BackgroundColor="WhiteSmoke"
+            HorizontalOptions="Start"
+            TextColor="Black"/>
     </Grid>
 
 </ContentPage>

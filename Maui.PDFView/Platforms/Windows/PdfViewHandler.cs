@@ -1,10 +1,12 @@
 ﻿using Maui.PDFView.Events;
+using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Handlers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Numerics;
+using System.Reflection.Metadata;
 using Windows.Data.Pdf;
 using Windows.Graphics.Display;
 using Windows.Storage;
@@ -20,6 +22,7 @@ namespace Maui.PDFView.Platforms.Windows
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
             [nameof(IPdfView.MaxZoom)] = MapMaxZoom,
             [nameof(IPdfView.PageAppearance)] = MapPageAppearance,
+            [nameof(IPdfView.PageIndex)] = MapPageIndex,
         };
 
         private ScrollViewer _scrollViewer;
@@ -27,6 +30,9 @@ namespace Maui.PDFView.Platforms.Windows
         private string _fileName;
 
         private PageAppearance _pageAppearance = new PageAppearance();
+        
+        private bool _isScrolling;
+        private bool _isPageIndexLocked;
 
         public PdfViewHandler() : base(PropertyMapper, null)
         {
@@ -54,6 +60,12 @@ namespace Maui.PDFView.Platforms.Windows
         {
             handler._pageAppearance = pdfView.PageAppearance ?? new PageAppearance();
         }
+
+        static void MapPageIndex(PdfViewHandler handler, IPdfView pdfView)
+        {
+            handler.GotoPage(pdfView.PageIndex);
+        }
+
 
         protected override ScrollViewer CreatePlatformView()
         {
@@ -113,6 +125,9 @@ namespace Maui.PDFView.Platforms.Windows
                     _stack.Children.Add(MakePage(bitmap, _pageAppearance));
                 }
             }
+
+            //  Reset page index
+            VirtualView.PageIndex = 0;
         }
 
         private UIElement MakePage(BitmapImage image, PageAppearance pageAppearance)
@@ -151,7 +166,32 @@ namespace Maui.PDFView.Platforms.Windows
             target.Translation += new Vector3(0, 0, ZDepth);
         }
 
-        private void OnScrollViewerViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+       
+
+        private void GotoPage(uint pageIndex)
+        {
+            if (_isScrolling)
+                return;
+
+            var layout = (StackPanel)_scrollViewer.Content;
+            if (pageIndex >= layout.Children.Count)
+                return;
+
+            var child = layout.Children[(int)pageIndex] as FrameworkElement;
+            if (child != null)
+            {
+                var transform = child.TransformToVisual(_scrollViewer);
+                var position = transform.TransformBounds(new(0, 0, child.ActualWidth, child.ActualHeight));
+
+                _isPageIndexLocked = true;
+                if (_stack.Orientation == Orientation.Vertical)
+                    _scrollViewer.ScrollToVerticalOffset(_scrollViewer.ZoomFactor*child.ActualOffset.Y);
+                else
+                    _scrollViewer.ScrollToHorizontalOffset(_scrollViewer.ZoomFactor * child.ActualOffset.X);
+            }
+        }
+
+        private void OnScrollViewerViewChanged(object? sender, ScrollViewerViewChangedEventArgs e)
         {
             // Get the index of the currently visible page
             var layout = (StackPanel)_scrollViewer.Content;
@@ -191,10 +231,20 @@ namespace Maui.PDFView.Platforms.Windows
             
             }
 
-            if (currentPage >= 0 && VirtualView.PageChangedCommand?.CanExecute(null) == true)
+            var newPageIndex = (uint)currentPage;
+            if (_isPageIndexLocked)
             {
-                VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
+                _isPageIndexLocked = false;
             }
+            else if (VirtualView.PageIndex != newPageIndex)
+            {
+                _isScrolling = true;
+                VirtualView.PageIndex = newPageIndex;
+                _isScrolling = false;
+            }
+
+            if (VirtualView.PageChangedCommand?.CanExecute(null) == true)
+                VirtualView.PageChangedCommand.Execute(new PageChangedEventArgs(currentPage + 1, layout.Children.Count));
         }
     }
 }
