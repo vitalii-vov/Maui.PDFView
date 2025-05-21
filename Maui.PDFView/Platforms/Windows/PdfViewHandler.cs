@@ -125,6 +125,9 @@ namespace Maui.PDFView.Platforms.Windows
                     _stack.Children.Add(MakePage(bitmap, _pageAppearance));
                 }
             }
+
+            //  Reset page index
+            VirtualView.PageIndex = 0;
         }
 
         private UIElement MakePage(BitmapImage image, PageAppearance pageAppearance)
