@@ -26,7 +26,8 @@ namespace Maui.PDFView.Platforms.Android.Common
         private float _maxTranX = 0f;
         private float _maxTranY = 0f;
 
-        public ZoomableRecyclerView(Context context, IAttributeSet? attrs = null, int defStyleAttr = 0) : base(context, attrs, defStyleAttr)
+        public ZoomableRecyclerView(Context context, IAttributeSet? attrs = null, int defStyleAttr = 0)
+            : base(context, attrs, defStyleAttr)
         {
             _scaleDetector = new ScaleGestureDetector(context, this);
             _gestureDetector = new GestureDetectorCompat(context, new GestureListener(this));
@@ -47,10 +48,8 @@ namespace Maui.PDFView.Platforms.Android.Common
                 { // Don't allow scroll, consume translation first
                     return 0;
                 }
-                else
-                {
-                    return (int)(dy / _scaleFactor);
-                }
+
+                return (int)(dy / _scaleFactor);
             }
 
             //else
@@ -58,10 +57,8 @@ namespace Maui.PDFView.Platforms.Android.Common
             { // Don't allow scroll, consume translation first
                 return 0;
             }
-            else
-            {
-                return (int)(dy / _scaleFactor);
-            }
+
+            return (int)(dy / _scaleFactor);
         }
 
         public int CalculateScrollAmountX(int dx)
@@ -72,27 +69,23 @@ namespace Maui.PDFView.Platforms.Android.Common
             if (dx > 0)
             {
                 if (_tranX > -_maxTranX)
-                { // Don't allow scroll, consume translation first
+                { 
+                    // Don't allow scroll, consume translation first
                     return 0;
                 }
-                else
-                {
-                    return (int)(dx / _scaleFactor);
-                }
+
+                return (int)(dx / _scaleFactor);
             }
 
-            //else
             if (_tranX < 0)
             { // Don't allow scroll, consume translation first
                 return 0;
             }
-            else
-            {
-                return (int)(dx / _scaleFactor);
-            }
+
+            return (int)(dx / _scaleFactor);
         }
 
-        public override bool OnTouchEvent(MotionEvent ev)
+        public override bool OnTouchEvent(MotionEvent? ev)
         {
             if (!IsZoomEnabled)
                 return base.OnTouchEvent(ev);
@@ -162,27 +155,17 @@ namespace Maui.PDFView.Platforms.Android.Common
 
     internal partial class ZoomableRecyclerView
     {
-        private sealed class GestureListener : SimpleOnGestureListener
+        private sealed class GestureListener(ZoomableRecyclerView zoomableRecycler) : SimpleOnGestureListener
         {
-            private readonly ZoomableRecyclerView _zoomableRecycler;
-
-            public GestureListener(ZoomableRecyclerView zoomableRecycler)
+            public override bool OnScroll(MotionEvent? e1, MotionEvent e2, float distanceX, float distanceY)
             {
-                _zoomableRecycler = zoomableRecycler;
-            }
-
-            public override bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-            {
-                if (!_zoomableRecycler._isScaling)
+                if (zoomableRecycler is { _isScaling: false, _scaleFactor: > MinZoom })
                 {
-                    if (_zoomableRecycler._scaleFactor > MinZoom)
-                    {
-                        var newTranX = _zoomableRecycler._tranX - distanceX;
-                        _zoomableRecycler._tranX = CoerceIn(newTranX, -_zoomableRecycler._maxTranX, 0f);
-                        var newTranY = _zoomableRecycler._tranY - distanceY;
-                        _zoomableRecycler._tranY = CoerceIn(newTranY, -_zoomableRecycler._maxTranY, 0f);
-                        _zoomableRecycler.Invalidate();
-                    }
+                    var newTranX = zoomableRecycler._tranX - distanceX;
+                    zoomableRecycler._tranX = CoerceIn(newTranX, -zoomableRecycler._maxTranX, 0f);
+                    var newTranY = zoomableRecycler._tranY - distanceY;
+                    zoomableRecycler._tranY = CoerceIn(newTranY, -zoomableRecycler._maxTranY, 0f);
+                    zoomableRecycler.Invalidate();
                 }
 
                 return base.OnScroll(e1, e2, distanceX, distanceY);

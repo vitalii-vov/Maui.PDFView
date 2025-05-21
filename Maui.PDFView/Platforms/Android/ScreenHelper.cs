@@ -1,4 +1,6 @@
-﻿using Android.Graphics.Pdf;
+﻿using Android.Content;
+using Android.Graphics;
+using Android.Graphics.Pdf;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -6,15 +8,17 @@ using Android.Views;
 
 namespace Maui.PDFView.Platforms.Android
 {
-    internal class ScreenHelper
+    public class ScreenHelper(Context context, bool isVertical)
     {
         private int _widthPixels;
         private int _heightPixels;
-        private float _density;
-
-        public void Invalidate()
+        public float Density { get; private set; }
+        
+        public ScreenHelper Invalidate()
         {
-            IWindowManager windowManager = global::Android.App.Application.Context.GetSystemService(global::Android.Content.Context.WindowService).JavaCast<IWindowManager>();
+            IWindowManager? windowManager = context
+                .GetSystemService(Context.WindowService)
+                .JavaCast<IWindowManager>();
             
             if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
             {
@@ -22,27 +26,38 @@ namespace Maui.PDFView.Platforms.Android
                 _widthPixels = bounds.Width();
                 _heightPixels = bounds.Height();
                 
-                var displayMetrics = global::Android.App.Application.Context.Resources.DisplayMetrics;
-                _density = displayMetrics.Density;
-                return;
+                var displayMetrics = context.Resources?.DisplayMetrics;
+                Density = displayMetrics.Density;
+                return this;
             }
 
             var metrics = new DisplayMetrics();
             windowManager.DefaultDisplay.GetMetrics(metrics);
             _widthPixels = metrics.WidthPixels;
             _heightPixels = metrics.HeightPixels;
-            _density = metrics.Density;
+            Density = metrics.Density;
+            return this;
         }
-        
-        public float Density => _density;
 
-        public (int Width, int Height) GetImageWidthAndHeight(bool isVertival, PdfRenderer.Page page)
+        public Bitmap PageBitmap(PdfRenderer.Page page)
+        {
+            var widthAndHeight = ImageWidthAndHeight(page);
+            //  If you need to apply a color to the page
+            //bitmap.EraseColor(Color.White);
+            return Bitmap.CreateBitmap(
+                widthAndHeight.Width,
+                widthAndHeight.Height,
+                Bitmap.Config.Argb8888
+            );
+        }
+
+        private (int Width, int Height) ImageWidthAndHeight(PdfRenderer.Page page)
         {
             int width;
             int height;
             float ratio;
 
-            if (isVertival)
+            if (isVertical)
             {
                 width = _widthPixels;
                 ratio = (float)page.Height / page.Width;
