@@ -54,12 +54,14 @@ Add `PdfView` to XAML
     IsHorizontal — display PDF horizontally
     Uri — path to the file on the device
     MaxZoom — max zoom level
+    PageIndex — set the current page by index
     PageChangedCommand — event of changing the current page
     -->
     <pdf:PdfView
         IsHorizontal="{Binding IsHorizontal}"
         Uri="{Binding PdfSource}"
         MaxZoom="4"
+        PageIndex="{Binding PageInex}"
         PageChangedCommand="{Binding PageChangedCommand}">
     </pdf:PdfView>
 
