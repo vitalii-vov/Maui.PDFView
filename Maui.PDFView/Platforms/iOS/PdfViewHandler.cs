@@ -9,7 +9,7 @@ using UIKit;
 
 namespace Maui.PDFView.Platforms.iOS
 {
-    internal class PdfViewHandler : ViewHandler<IPdfView, PdfKit.PdfView>
+    public class PdfViewHandler : ViewHandler<IPdfView, PdfKit.PdfView>
     {
         public static readonly PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)
         {

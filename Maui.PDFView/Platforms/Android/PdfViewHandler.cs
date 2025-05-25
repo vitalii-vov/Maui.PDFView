@@ -11,7 +11,7 @@ using Maui.PDFView.Helpers;
 
 namespace Maui.PDFView.Platforms.Android
 {
-    internal class PdfViewHandler : ViewHandler<IPdfView, FrameLayout>
+    public class PdfViewHandler : ViewHandler<IPdfView, FrameLayout>
     {
         public static readonly PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)
         {

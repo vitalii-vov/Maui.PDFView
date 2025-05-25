@@ -14,7 +14,7 @@ using Windows.Storage.Streams;
 
 namespace Maui.PDFView.Platforms.Windows
 {
-    internal class PdfViewHandler : ViewHandler<IPdfView, ScrollViewer>
+    public class PdfViewHandler : ViewHandler<IPdfView, ScrollViewer>
     {
         public static readonly PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)
         {
