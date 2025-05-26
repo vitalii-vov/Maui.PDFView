@@ -7,9 +7,9 @@ using UIKit;
 
 namespace Maui.PDFView.Platforms.MacCatalyst
 {
-    internal class PdfViewHandler : ViewHandler<IPdfView, PdfKit.PdfView>
+    public class PdfViewHandler : ViewHandler<IPdfView, PdfKit.PdfView>
     {
-        private readonly static PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)
+        public static readonly PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)
         {
             [nameof(IPdfView.Uri)] = MapUri,
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,

@@ -9,7 +9,6 @@ using Maui.PDFView.Helpers;
 
 namespace Maui.PDFView.Platforms.Android
 {
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public class PdfViewHandler : ViewHandler<IPdfView, FrameLayout>
     {
         public static readonly PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)

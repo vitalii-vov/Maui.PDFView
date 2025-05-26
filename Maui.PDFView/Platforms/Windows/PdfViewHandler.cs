@@ -14,9 +14,9 @@ using Windows.Storage.Streams;
 
 namespace Maui.PDFView.Platforms.Windows
 {
-    internal class PdfViewHandler : ViewHandler<IPdfView, ScrollViewer>
+    public class PdfViewHandler : ViewHandler<IPdfView, ScrollViewer>
     {
-        private readonly static PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)
+        public static readonly PropertyMapper<PdfView, PdfViewHandler> PropertyMapper = new(ViewMapper)
         {
             [nameof(IPdfView.Uri)] = MapUri,
             [nameof(IPdfView.IsHorizontal)] = MapIsHorizontal,
