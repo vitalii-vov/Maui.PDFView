@@ -38,7 +38,7 @@ namespace Example.Business.UI.ViewModels
         [RelayCommand] private async Task UploadUri()
         {
             // You can use the IPdfSource interface to load a PDF file from various sources such as assets, HTTP, file system, etc.,
-            // using the built-in implementations: AssetPdfSource, FilePdfSource, and HttpPdfSource.
+            // using the built-in implementations: AssetPdfSource, FilePdfSource, ByteArrayPdfDataSource and HttpPdfSource.
             // Alternatively, you can create your own implementation of IPdfSource to suit your specific needs.
             // Using this interface is optional, as its main purpose is to convert your data format into a file path on the device.
             IPdfSource source;
