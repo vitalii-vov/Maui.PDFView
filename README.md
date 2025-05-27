@@ -117,3 +117,33 @@ You can customize the way pages are displayed by modifying the `PageAppearance` 
 
 </pdf:PdfView>
 ```
+
+&nbsp;<br>
+## Helper classes implementing `IPdfSource`
+The `PdfView` component works **only with file paths**. This is because the native platform components primarily operate with file paths, and handling different PDF data sources directly inside the component would significantly complicate the code.
+
+Therefore, you must always provide a **file path** regardless of the form your PDF data takes—whether it’s a byte array, a stream, an asset, or a URL.
+
+To simplify working with these data sources, the component includes helper classes that implement the `IPdfSource` interface:
+
+- `AssetPdfSource`
+- `ByteArrayPdfDataSource`
+- `FilePdfSource`
+- `HttpPdfSource`
+
+Example of using PdfSource
+```C#
+[RelayCommand] private async Task UploadUri()
+{      
+    var source = new HttpPdfSource("https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf");
+    PdfSource = await source.GetFilePathAsync();
+}
+
+[RelayCommand] private async Task UploadAsset()
+{
+    var source = new AssetPdfSource("Example.Resources.PDF.pdf2.pdf");
+    PdfSource = await source.GetFilePathAsync();
+}
+```
+
+You can also create your own implementation of the `IPdfSource` interface to address your specific needs.
