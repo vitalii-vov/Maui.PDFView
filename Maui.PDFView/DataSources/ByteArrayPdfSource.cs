@@ -1,10 +1,10 @@
 namespace Maui.PDFView.DataSources;
 
-public class ByteArrayPdfDataSource : IPdfSource
+public class ByteArrayPdfSource : IPdfSource
 {
     private readonly byte[] _pdfBytes;
 
-    public ByteArrayPdfDataSource(byte[] pdfBytes)
+    public ByteArrayPdfSource(byte[] pdfBytes)
     {
         _pdfBytes = pdfBytes;
     }
