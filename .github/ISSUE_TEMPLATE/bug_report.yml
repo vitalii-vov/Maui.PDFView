@@ -33,7 +33,7 @@ body:
     attributes:
       label: What was the expected result?
       description: Describe what you expected to happen.
-      placeholder: For example: The window should open...
+      placeholder: "For example: When I pass the path, the PdfView should display..."
     validations:
       required: true
 
