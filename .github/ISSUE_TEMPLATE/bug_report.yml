@@ -25,6 +25,7 @@ body:
       options:
         - .NET 8
         - .NET 9
+        - Another
     validations:
       required: true
 
