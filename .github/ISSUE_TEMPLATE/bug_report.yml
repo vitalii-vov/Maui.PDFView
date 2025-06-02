@@ -38,13 +38,6 @@ body:
     validations:
       required: true
 
-  - type: input
-    id: screenshots
-    attributes:
-      label: Screenshot or video (optional)
-      description: Provide a link to a screenshot or video, or attach it below after submitting.
-      placeholder: https://link.to/screenshot-or-video
-
   - type: textarea
     id: workaround
     attributes:
