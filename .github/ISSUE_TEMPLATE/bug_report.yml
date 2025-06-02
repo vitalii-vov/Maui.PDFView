@@ -13,7 +13,7 @@ body:
     attributes:
       label: Describe your issue
       description: Provide a clear and concise description of the problem.
-      placeholder: For example: When I click the button, the app crashes...
+      placeholder: "For example: When I scroll or zoom, the app crashes..."
     validations:
       required: true
 
