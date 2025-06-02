@@ -8,6 +8,14 @@ body:
       value: |
         Thank you for taking the time to report a bug. Please provide as much detail as possible.
 
+  - type: input
+    id: version
+    attributes:
+      label: PDFView NuGet version
+      description: Please enter the version (e.g., 1.2.3)
+    validations:
+      required: true
+
   - type: textarea
     id: description
     attributes:
