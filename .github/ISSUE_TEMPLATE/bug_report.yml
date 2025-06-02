@@ -1,0 +1,51 @@
+name: 🐞 Bug Report
+description: Report a problem you've encountered
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug. Please provide as much detail as possible.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe your issue
+      description: Provide a clear and concise description of the problem.
+      placeholder: For example: When I click the button, the app crashes...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: dotnet-version
+    attributes:
+      label: .NET version
+      description: Select the .NET version you are using
+      options:
+        - .NET 8
+        - .NET 9
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-result
+    attributes:
+      label: What was the expected result?
+      description: Describe what you expected to happen.
+      placeholder: For example: The window should open...
+    validations:
+      required: true
+
+  - type: input
+    id: screenshots
+    attributes:
+      label: Screenshot or video (optional)
+      description: Provide a link to a screenshot or video, or attach it below after submitting.
+      placeholder: https://link.to/screenshot-or-video
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround or possible cause (if any)
+      description: If you’ve found a workaround or suspect the cause, describe it here.
