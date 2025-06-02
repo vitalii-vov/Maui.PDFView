@@ -17,9 +17,3 @@ body:
     validations:
       required: true
 
-  - type: input
-    id: screenshots
-    attributes:
-      label: Screenshots or references (optional)
-      description: Provide a link to an image or attach it after submitting, if applicable.
-      placeholder: https://link.to/example-image
