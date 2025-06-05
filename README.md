@@ -127,7 +127,7 @@ Therefore, you must always provide a **file path** regardless of the form your P
 To simplify working with these data sources, the component includes helper classes that implement the `IPdfSource` interface:
 
 - `AssetPdfSource`
-- `ByteArrayPdfDataSource`
+- `ByteArrayPdfSource`
 - `FilePdfSource`
 - `HttpPdfSource`
 
