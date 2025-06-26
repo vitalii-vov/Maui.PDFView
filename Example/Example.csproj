@@ -64,13 +64,13 @@
 	<ItemGroup>
 	  <None Remove="Resources\PDF\pdf1.pdf" />
 	  <None Remove="Resources\PDF\pdf2.pdf" />
+		<None Remove="Resources\PDF\pdf_protected_12345678.pdf" />
 	  <None Remove="Business\Collections\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\PDF\pdf1.pdf" />
 	  <EmbeddedResource Include="Resources\PDF\pdf2.pdf" />
-	  <None Remove="Resources\PDF\pdf_protected_12345678.pdf" />
 	  <EmbeddedResource Include="Resources\PDF\pdf_protected_12345678.pdf" />
 	</ItemGroup>
 
