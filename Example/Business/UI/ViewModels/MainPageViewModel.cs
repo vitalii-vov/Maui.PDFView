@@ -49,5 +49,11 @@ namespace Example.Business.UI.ViewModels
             PdfSource = await source.GetFilePathAsync();
         }
 
+        [RelayCommand] private async Task UploadProtected()
+        {
+            var source = new AssetPdfSource("Example.Resources.PDF.pdf_protected_12345678.pdf");
+            PdfSource = await source.GetFilePathAsync();
+        }
+
     }
 }
