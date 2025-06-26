@@ -53,7 +53,7 @@ namespace Example.Business.UI.ViewModels
         {
             try
             {
-                var source = new AssetPdfSource("PDF/pdf2.pdf");
+                var source = new AssetPdfSource("PDF/pdf_protected_12345678.pdf");
                 PdfSource = await source.GetFilePathAsync();
             }
             catch (Exception ex)
