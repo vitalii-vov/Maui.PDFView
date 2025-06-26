@@ -42,7 +42,7 @@ namespace Example.Business.UI.ViewModels
             // Alternatively, you can create your own implementation of IPdfSource to suit your specific needs.
             // Using this interface is optional, as its main purpose is to convert your data format into a file path on the device.
             IPdfSource source;
-            //source = new AssetPdfSource("Example.Resources.PDF.pdf2.pdf");
+            //source = new AssetPdfSource("PDF/pdf2.pdf");
             //source = new FilePdfSource(_repository.GetPdfSource());
             //source = new ByteArrayPdfDataSource(await File.ReadAllBytesAsync(_repository.GetPdfSource()));
             source = new HttpPdfSource("https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf");

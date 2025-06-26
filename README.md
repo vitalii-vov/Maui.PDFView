@@ -141,7 +141,7 @@ Example of using PdfSource
 
 [RelayCommand] private async Task UploadAsset()
 {
-    var source = new AssetPdfSource("Example.Resources.PDF.pdf2.pdf");
+    var source = new AssetPdfSource("PDF/pdf2.pdf");
     PdfSource = await source.GetFilePathAsync();
 }
 ```
