@@ -1,4 +1,4 @@
-﻿using Android.Graphics.Pdf;
+using Android.Graphics.Pdf;
 using Android.Graphics;
 using Android.OS;
 using AndroidX.RecyclerView.Widget;

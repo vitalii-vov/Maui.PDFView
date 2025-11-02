@@ -1,4 +1,4 @@
-﻿﻿using Android.Graphics;
+using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
