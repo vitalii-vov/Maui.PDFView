@@ -31,6 +31,9 @@ namespace Maui.PDFView.Platforms.Android.Common
             _scaleDetector = new ScaleGestureDetector(context, this);
             _gestureDetector = new GestureDetectorCompat(context, new GestureListener(this));
             SetLayoutManager(new ZoomableLinearLayoutManager(context, LinearLayoutManager.Vertical, false));
+
+            // Allow children to draw outside bounds when zoomed
+            SetClipChildren(false);
         }
 
         public bool IsZoomEnabled { get; set; } = true;
@@ -104,9 +107,18 @@ namespace Maui.PDFView.Platforms.Android.Common
 
         protected override void DispatchDraw(Canvas canvas)
         {
+            canvas.Save();
+
+            // Disable clipping entirely when zoomed
+            if (_scaleFactor > MinZoom)
+            {
+                canvas.ClipRect(0, 0, int.MaxValue, int.MaxValue);
+            }
+
             canvas.Translate(_tranX, _tranY);
             canvas.Scale(_scaleFactor, _scaleFactor);
             base.DispatchDraw(canvas);
+            canvas.Restore();
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using Android.Graphics;
+﻿﻿using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
@@ -10,7 +10,7 @@ namespace Maui.PDFView.Platforms.Android.Common
     internal class PdfBitmapAdapter : RecyclerView.Adapter
     {
         private PageAppearance _pageAppearance;
-        
+
         public PdfBitmapAdapter(List<Bitmap> pages, PageAppearance pageAppearance)
         {
             Pages = pages;
@@ -18,17 +18,17 @@ namespace Maui.PDFView.Platforms.Android.Common
         }
 
         public List<Bitmap> Pages { get; }
-        
+
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             global::Android.Views.View itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.card_view, parent, false);
 
-            if (itemView is not CardView cardView || _pageAppearance == null) 
+            if (itemView is not CardView cardView || _pageAppearance == null)
                 return new CardViewHolder(itemView);
-            
+
             //  shadow
             cardView.Elevation = _pageAppearance.ShadowEnabled ? 4 : 0;
-            
+
             //  margin
             if (cardView.LayoutParameters is ViewGroup.MarginLayoutParams layoutParams)
             {
@@ -46,7 +46,25 @@ namespace Maui.PDFView.Platforms.Android.Common
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             CardViewHolder vh = (CardViewHolder)holder;
-            vh.Image.SetImageBitmap(Pages[position]);
+            var bitmap = Pages[position];
+
+            // Set the bitmap with an identity matrix to display at natural size
+            vh.Image.SetImageBitmap(bitmap);
+            vh.Image.SetScaleType(ImageView.ScaleType.Matrix);
+
+            // Create an identity matrix so the image is displayed without any transformation
+            var matrix = new Matrix();
+            matrix.SetScale(1f, 1f);
+            vh.Image.ImageMatrix = matrix;
+
+            // Set the ImageView dimensions to match the bitmap
+            var layoutParams = vh.Image.LayoutParameters;
+            if (layoutParams != null)
+            {
+                layoutParams.Width = bitmap.Width;
+                layoutParams.Height = bitmap.Height;
+                vh.Image.LayoutParameters = layoutParams;
+            }
         }
 
         public override int ItemCount => Pages.Count;
