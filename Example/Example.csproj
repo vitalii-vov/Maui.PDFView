@@ -62,14 +62,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\PDF\pdf1.pdf" />
-	  <None Remove="Resources\PDF\pdf2.pdf" />
+	  <None Remove="Resources\PDF\*.pdf" />
 	  <None Remove="Business\Collections\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\PDF\pdf1.pdf" />
-	  <EmbeddedResource Include="Resources\PDF\pdf2.pdf" />
+	  <EmbeddedResource Include="Resources\PDF\*.pdf" />
 	</ItemGroup>
 
 	<ItemGroup>

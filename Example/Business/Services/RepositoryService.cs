@@ -11,7 +11,7 @@ namespace Example.Business.Services
         {
             //  Get PDF as byte[] from any source.
             //  It can be a file downloaded via REST request, retrieved from user's local disk, etc.,
-            //  or as in this example - retrieved from application resources. 
+            //  or as in this example - retrieved from application resources.
             byte[] bytes = _loader.GetPdfFileContent();
 
             //  Save the data to a file to get the path to the file.
@@ -30,8 +30,9 @@ namespace Example.Business.Services
 
         public ResourcePdfLoader()
         {
-            _pdfs.Add("pdf2.pdf");
             _pdfs.Add("pdf1.pdf");
+            _pdfs.Add("pdf2.pdf");
+            _pdfs.Add("pdf3.pdf");
         }
 
         public byte[] GetPdfFileContent()
