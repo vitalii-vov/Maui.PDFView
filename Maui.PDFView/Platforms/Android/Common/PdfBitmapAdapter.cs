@@ -50,12 +50,9 @@ namespace Maui.PDFView.Platforms.Android.Common
 
             // Set the bitmap with an identity matrix to display at natural size
             vh.Image.SetImageBitmap(bitmap);
-            vh.Image.SetScaleType(ImageView.ScaleType.Matrix);
 
             // Create an identity matrix so the image is displayed without any transformation
-            var matrix = new Matrix();
-            matrix.SetScale(1f, 1f);
-            vh.Image.ImageMatrix = matrix;
+            vh.Image.ImageMatrix = new Matrix();
 
             // Set the ImageView dimensions to match the bitmap
             var layoutParams = vh.Image.LayoutParameters;

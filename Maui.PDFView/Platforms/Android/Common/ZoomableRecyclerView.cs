@@ -128,11 +128,7 @@ namespace Maui.PDFView.Platforms.Android.Common
         {
             canvas.Save();
 
-            // Disable clipping entirely when zoomed
-            if (_scaleFactor > MinZoom)
-            {
-                canvas.ClipRect(0, 0, int.MaxValue, int.MaxValue);
-            }
+            canvas.ClipRect(0, 0, (int)(Width * _scaleFactor), (int)(Height * _scaleFactor));
 
             canvas.Translate(_tranX, _tranY);
             canvas.Scale(_scaleFactor, _scaleFactor);
@@ -170,8 +166,6 @@ namespace Maui.PDFView.Platforms.Android.Common
                 : OverScrollMode.IfContentScrolls;
 
             Invalidate();
-            RequestLayout(); // Force layout recalculation
-            PostInvalidate(); // Thread-safe invalidation
 
             // Also invalidate parent to ensure hierarchy updates
             var parent = Parent as global::Android.Views.View;
