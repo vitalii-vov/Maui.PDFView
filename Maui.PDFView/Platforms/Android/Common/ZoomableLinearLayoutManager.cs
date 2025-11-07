@@ -26,7 +26,7 @@ namespace Maui.PDFView.Platforms.Android.Common
 
         public override int ScrollHorizontallyBy(int dx, RecyclerView.Recycler? recycler, RecyclerView.State? state)
         {
-            var scrollAmount = _recyclerView?.CalculateScrollAmountY(dx) ?? dx;
+            var scrollAmount = _recyclerView?.CalculateScrollAmountX(dx) ?? dx;
             return base.ScrollHorizontallyBy(scrollAmount, recycler, state);
         }
     }
