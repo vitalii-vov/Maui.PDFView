@@ -1,14 +1,11 @@
 ﻿using Maui.PDFView.Events;
-using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Handlers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Numerics;
-using System.Reflection.Metadata;
 using Windows.Data.Pdf;
-using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
@@ -27,7 +24,7 @@ namespace Maui.PDFView.Platforms.Windows
 
         private ScrollViewer _scrollViewer;
         private StackPanel _stack;
-        private string _fileName;
+        private string? _fileName;
 
         private PageAppearance _pageAppearance = new PageAppearance();
         
