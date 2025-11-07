@@ -88,6 +88,9 @@ internal partial class MainPageViewModel : ObservableObject
         {
             //  See the example project to understand how to work with paths.
             PdfSource = "/path/to/file.pdf";
+
+            //  You can set the Uri property to null to clear the component.
+            //PdfSource = null;
         }
         catch(Exception ex)
         {
