@@ -48,6 +48,7 @@ namespace Maui.PDFView.Platforms.Android
             layoutManager.Orientation = pdfView.IsHorizontal
                 ? LinearLayoutManager.Horizontal
                 : LinearLayoutManager.Vertical;
+            handler.RenderPages();
         }
 
         static void MapMaxZoom(PdfViewHandler handler, IPdfView pdfView)
