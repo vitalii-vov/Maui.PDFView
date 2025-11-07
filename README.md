@@ -80,7 +80,7 @@ Set `PdfSource` in ViewModel
 ```C#
 internal partial class MainPageViewModel : ObservableObject
 {
-    [ObservableProperty] private string _pdfSource;
+    [ObservableProperty] private string? _pdfSource;
 
     [RelayCommand] private void ChangeUri()
     {
