@@ -2,9 +2,7 @@
 using Maui.PDFView.Events;
 using Maui.PDFView.Helpers;
 using Microsoft.Maui.Handlers;
-using Microsoft.Maui.Layouts;
 using PdfKit;
-using System.Reflection.Metadata;
 using UIKit;
 
 namespace Maui.PDFView.Platforms.iOS
@@ -20,7 +18,7 @@ namespace Maui.PDFView.Platforms.iOS
             [nameof(IPdfView.PageIndex)] = MapPageIndex,
         };
 
-        private string _fileName;
+        private string? _fileName;
         private PageAppearance _appearance = new();
         private readonly DesiredSizeHelper _sizeHelper = new();
         
@@ -110,8 +108,12 @@ namespace Maui.PDFView.Platforms.iOS
         private void RenderPages()
         {
             if (_fileName == null)
+            {
+                //  Clear View
+                PlatformView.Document = null;
                 return;
-
+            }
+            
             var doc = new PdfDocument(NSData.FromFile(_fileName));
             CropPages(doc, _appearance.Crop);
             PlatformView.Document = doc;

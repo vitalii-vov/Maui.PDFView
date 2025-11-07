@@ -11,7 +11,7 @@ namespace Example.Business.UI.ViewModels
     {
         private readonly IRepositoryService _repository = new RepositoryService();
 
-        [ObservableProperty] private string _pdfSource;
+        [ObservableProperty] private string? _pdfSource;
         [ObservableProperty] private bool _isHorizontal;
         [ObservableProperty] private float _maxZoom = 4;
         [ObservableProperty] private string _pagePosition;
@@ -48,6 +48,11 @@ namespace Example.Business.UI.ViewModels
             source = new HttpPdfSource("https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf");
             PdfSource = await source.GetFilePathAsync();
         }
-
+        
+        [RelayCommand] private async Task NullUri()
+        {
+            //  Reset PdfView
+            PdfSource = null;
+        }
     }
 }

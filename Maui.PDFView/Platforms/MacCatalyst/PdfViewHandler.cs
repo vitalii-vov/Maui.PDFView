@@ -18,7 +18,7 @@ namespace Maui.PDFView.Platforms.MacCatalyst
             [nameof(IPdfView.PageIndex)] = MapPageIndex,
         };
 
-        private string _fileName;
+        private string? _fileName;
         private PageAppearance _appearance = new();
         private readonly DesiredSizeHelper _sizeHelper = new();
         
@@ -108,7 +108,11 @@ namespace Maui.PDFView.Platforms.MacCatalyst
         private void RenderPages()
         {
             if (_fileName == null)
+            {
+                //  Clear View
+                PlatformView.Document = null;
                 return;
+            }
 
             var doc = new PdfDocument(NSData.FromFile(_fileName));
             CropPages(doc, _appearance.Crop);

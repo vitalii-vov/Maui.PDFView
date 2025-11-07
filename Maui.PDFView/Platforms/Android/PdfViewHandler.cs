@@ -24,7 +24,7 @@ namespace Maui.PDFView.Platforms.Android
 
         private readonly ScreenHelper _screenHelper = new();
         private ZoomableRecyclerView _recycleView;
-        private string _fileName;
+        private string? _fileName;
         private readonly DesiredSizeHelper _sizeHelper = new();
         
         private PageAppearance? _pageAppearance;
@@ -101,7 +101,11 @@ namespace Maui.PDFView.Platforms.Android
         void RenderPages()
         {
             if (_fileName == null)
+            {
+                //  Clear View
+                _recycleView.SetAdapter(new PdfBitmapAdapter([], _pageAppearance));
                 return;
+            }
 
             var isVertival = !VirtualView.IsHorizontal;
 

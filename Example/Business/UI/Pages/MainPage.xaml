@@ -17,7 +17,7 @@
 
         <ScrollView Orientation="Horizontal">
             <Grid
-                ColumnDefinitions="Auto,Auto,Auto,Auto,Auto"
+                ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
                 ColumnSpacing="8"
                 RowDefinitions="Auto,Auto">
 
@@ -77,6 +77,14 @@
                     Grid.Column="4"
                     Command="{Binding UploadUriCommand}"
                     Text="Upload Uri"
+                    VerticalOptions="Center" />
+                
+                <Button
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="5"
+                    Command="{Binding NullUriCommand}"
+                    Text="Null Uri"
                     VerticalOptions="Center" />
 
             </Grid>
