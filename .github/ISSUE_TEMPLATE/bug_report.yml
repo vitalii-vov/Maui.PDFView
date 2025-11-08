@@ -33,6 +33,7 @@ body:
       options:
         - .NET 8
         - .NET 9
+        - .NET 10
         - Another
     validations:
       required: true
