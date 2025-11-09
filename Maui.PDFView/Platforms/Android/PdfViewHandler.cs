@@ -1,4 +1,4 @@
-﻿using Android.Graphics.Pdf;
+using Android.Graphics.Pdf;
 using Android.Graphics;
 using Android.OS;
 using AndroidX.RecyclerView.Widget;
@@ -26,9 +26,9 @@ namespace Maui.PDFView.Platforms.Android
         private ZoomableRecyclerView _recycleView;
         private string? _fileName;
         private readonly DesiredSizeHelper _sizeHelper = new();
-        
+
         private PageAppearance? _pageAppearance;
-        
+
         private bool _isScrolling;
         private bool _isPageIndexLocked;
 
@@ -55,7 +55,7 @@ namespace Maui.PDFView.Platforms.Android
         {
             handler._recycleView.MaxZoom = pdfView.MaxZoom;
         }
-        
+
         static void MapPageAppearance(PdfViewHandler handler, IPdfView pdfView)
         {
             handler._pageAppearance = pdfView.PageAppearance ?? new PageAppearance();
@@ -72,6 +72,9 @@ namespace Maui.PDFView.Platforms.Android
             {
                 LayoutParameters = new(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent)
             };
+
+            // Allow RecyclerView to draw outside bounds when zoomed
+            layout.SetClipChildren(false);
 
             _recycleView = new ZoomableRecyclerView(Context)
             {
@@ -94,7 +97,7 @@ namespace Maui.PDFView.Platforms.Android
                 //  (for example, when the screen is flipped or the screen is split)
                 RenderPages();
             }
-            
+
             return base.GetDesiredSize(widthConstraint, heightConstraint);
         }
 
@@ -127,7 +130,7 @@ namespace Maui.PDFView.Platforms.Android
 
                 //  If you need to apply a color to the page
                 //bitmap.EraseColor(Color.White);
-                
+
                 // Crop page
                 var matrix = GetCropMatrix(page, bitmap, _pageAppearance?.Crop ?? Thickness.Zero);
 
@@ -156,10 +159,10 @@ namespace Maui.PDFView.Platforms.Android
         {
             if (bounds.IsEmpty)
                 return null;
-            
+
             int pageWidth = page.Width;
             int pageHeight = page.Height;
-                
+
             var cropLeft = (int) bounds.Left;
             int cropTop = (int) bounds.Top;
             int cropRight = pageWidth - (int) bounds.Right;
@@ -229,7 +232,7 @@ namespace Maui.PDFView.Platforms.Android
                             ? Math.Min(visibleChild.Right, recyclerView.Width) - Math.Max(visibleChild.Left, 0) // Width
                             : Math.Min(visibleChild.Bottom, recyclerView.Height) - Math.Max(visibleChild.Top, 0); // Height
 
-                        // There may be a situation where the height (or width in case of horizontal orientation) of the pages are different. 
+                        // There may be a situation where the height (or width in case of horizontal orientation) of the pages are different.
                         // In this case, the page that is fully displayed is considered visible.
                         if (visibleSize == (layoutManager.Orientation == LinearLayoutManager.Horizontal ? visibleChild.Width : visibleChild.Height))
                         {
