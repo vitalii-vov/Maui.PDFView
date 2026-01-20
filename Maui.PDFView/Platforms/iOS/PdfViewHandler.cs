@@ -101,7 +101,7 @@ namespace Maui.PDFView.Platforms.iOS
         
         protected override void DisconnectHandler(PdfKit.PdfView platformView)
         {
-            NSNotificationCenter.DefaultCenter.RemoveObserver(PlatformView);
+            NSNotificationCenter.DefaultCenter.RemoveObserver(platformView);
             base.DisconnectHandler(platformView);
         }
 
