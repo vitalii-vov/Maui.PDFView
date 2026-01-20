@@ -1,16 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
+    Title="Example"
     x:Class="Example.Business.UI.Pages.MainPage"
+    x:DataType="vms:MainPageViewModel"
+    x:Name="Page"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pdf="clr-namespace:Maui.PDFView;assembly=Maui.PDFView"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vms="clr-namespace:Example.Business.UI.ViewModels"
-    Title="Example"
-    x:DataType="vms:MainPageViewModel">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior Command="{Binding AppearingCommand}" EventName="Appearing" />
+        <toolkit:EventToCommandBehavior
+            BindingContext="{Binding Path=BindingContext, Source={x:Reference Page}}"
+            Command="{Binding AppearingCommand}"
+            EventName="Appearing" />
     </ContentPage.Behaviors>
 
     <Grid RowDefinitions="Auto,*">
@@ -22,86 +26,85 @@
                 RowDefinitions="Auto,Auto">
 
                 <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
                     FontSize="Caption"
+                    Grid.Column="0"
+                    Grid.Row="0"
                     HorizontalTextAlignment="Center"
                     Text="Horizontal"
                     VerticalOptions="Center" />
 
                 <CheckBox
-                    Grid.Row="1"
                     Grid.Column="0"
+                    Grid.Row="1"
                     IsChecked="{Binding IsHorizontal}"
                     VerticalOptions="Center" />
 
                 <Label
-                    Grid.Row="0"
-                    Grid.Column="1"
                     FontSize="Caption"
+                    Grid.Column="1"
+                    Grid.Row="0"
                     HorizontalTextAlignment="Center"
                     Text="{Binding MaxZoom, StringFormat='Max zoom is {0}'}" />
 
                 <Stepper
-                    Grid.Row="1"
                     Grid.Column="1"
+                    Grid.Row="1"
                     Maximum="5"
                     Minimum="1"
                     Value="{Binding MaxZoom}" />
 
                 <Label
-                    Grid.Row="0"
-                    Grid.Column="2"
                     FontSize="Caption"
+                    Grid.Column="2"
+                    Grid.Row="0"
                     HorizontalTextAlignment="Center"
                     Text="{Binding PageIndex, StringFormat='Page index is {0}'}" />
 
                 <Stepper
-                    Grid.Row="1"
                     Grid.Column="2"
+                    Grid.Row="1"
                     Maximum="{Binding MaxPageIndex}"
                     Minimum="0"
                     Value="{Binding PageIndex, Mode=TwoWay}" />
 
                 <Button
+                    Command="{Binding ChangeUriCommand}"
+                    Grid.Column="3"
                     Grid.Row="0"
                     Grid.RowSpan="2"
-                    Grid.Column="3"
-                    Command="{Binding ChangeUriCommand}"
                     Text="Change Uri"
                     VerticalOptions="Center" />
-                
+
                 <Button
+                    Command="{Binding UploadUriCommand}"
+                    Grid.Column="4"
                     Grid.Row="0"
                     Grid.RowSpan="2"
-                    Grid.Column="4"
-                    Command="{Binding UploadUriCommand}"
                     Text="Upload Uri"
                     VerticalOptions="Center" />
-                
+
                 <Button
+                    Command="{Binding NullUriCommand}"
+                    Grid.Column="5"
                     Grid.Row="0"
                     Grid.RowSpan="2"
-                    Grid.Column="5"
-                    Command="{Binding NullUriCommand}"
                     Text="Null Uri"
                     VerticalOptions="Center" />
 
             </Grid>
         </ScrollView>
 
-
         <pdf:PdfView
             Grid.Row="1"
             IsHorizontal="{Binding IsHorizontal}"
             MaxZoom="{Binding MaxZoom}"
             PageChangedCommand="{Binding PageChangedCommand}"
-            Uri="{Binding PdfSource}"
-            PageIndex="{Binding PageIndex, Mode=TwoWay}" />
+            PageIndex="{Binding PageIndex, Mode=TwoWay}"
+            Uri="{Binding PdfSource}" />
 
         <Label
-            Grid.Row="1"
             BackgroundColor="WhiteSmoke"
+            Grid.Row="1"
             HorizontalOptions="Start"
             Text="{Binding Mode=OneWay, Path=PagePosition}"
             TextColor="Black"
