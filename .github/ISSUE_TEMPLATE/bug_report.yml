@@ -38,6 +38,20 @@ body:
     validations:
       required: true
 
+  - type: checkboxes
+    id: platforms
+    attributes:
+      label: Target Platforms
+      description: Select the platform where the issue occurred
+      options:
+        - Android
+        - iOS
+        - macOS
+        - Windows
+    validations:
+      required: true
+      min-items: 1
+
   - type: textarea
     id: expected-result
     attributes:
