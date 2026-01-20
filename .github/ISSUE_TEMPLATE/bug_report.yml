@@ -44,10 +44,10 @@ body:
       label: Target Platforms
       description: Select the platform where the issue occurred
       options:
-        - Android
-        - iOS
-        - macOS
-        - Windows
+        - label: Android
+        - label: iOS
+        - label: macOS
+        - label: Windows
     validations:
       required: true
       min-items: 1
