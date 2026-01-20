@@ -21,7 +21,7 @@
 
         <ScrollView Orientation="Horizontal">
             <Grid
-                ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                 ColumnSpacing="8"
                 RowDefinitions="Auto,Auto">
 
@@ -89,6 +89,14 @@
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Text="Null Uri"
+                    VerticalOptions="Center" />
+
+                <Button
+                    Command="{Binding NavigatePopupCommand}"
+                    Grid.Column="6"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Text="Popup"
                     VerticalOptions="Center" />
 
             </Grid>

@@ -77,6 +77,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.2" />
+		<PackageReference Include="Mopups" Version="1.3.4" />
 	</ItemGroup>
 
 	<ItemGroup>

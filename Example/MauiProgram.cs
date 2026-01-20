@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Maui.PDFView;
+using Mopups.Hosting;
 
 namespace Example
 {
@@ -13,6 +14,7 @@ namespace Example
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseMauiPdfView()
+                .ConfigureMopups()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
