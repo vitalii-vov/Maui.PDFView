@@ -5,8 +5,8 @@ Library for display PDF files in .NET MAUI on Android, iOS, MacOS and Windows
 ![GitHub License](https://img.shields.io/github/license/vitalii-vov/Maui.PDFView?style=for-the-badge)
 ![last commit](https://img.shields.io/github/last-commit/vitalii-vov/Maui.PDFView?style=for-the-badge)
 
-| .NET MAUI | .NET 8   | .NET 9   |
-| :-------- | :------- | :------- |
+| .NET MAUI | .NET 9 | .NET 10 |
+| :-------- |:-------|:--------|
 
 | Platform  | Android | iOS | MacOS | Windows |
 | :-------- | :-----  | :-- | :---- | :------ |
@@ -67,13 +67,6 @@ Add `PdfView` to XAML
 
 </ContentPage>
 ```
-
-> [!IMPORTANT]
-> To use a component with `.net9` add `HandlerProperties.DisconnectPolicy="Manual"` to `PdfView`
-> ```XAML
-> <pdf:PdfView
->     HandlerProperties.DisconnectPolicy="Manual" />
-> ```
 
 &nbsp;<br>
 Set `PdfSource` in ViewModel

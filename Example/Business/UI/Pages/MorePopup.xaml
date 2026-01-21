@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mopups:PopupPage
+    BackgroundColor="#90000000"
+    x:Class="Example.Business.UI.Pages.MorePopup"
+    x:DataType="pages:MorePopupViewModel"
+    x:Name="Page"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:pages="clr-namespace:Example.Business.UI.Pages"
+    xmlns:pdfView="clr-namespace:Maui.PDFView;assembly=Maui.PDFView"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            BindingContext="{Binding Path=BindingContext, Source={x:Reference Page}}"
+            Command="{Binding AppearingCommand}"
+            EventName="Appearing" />
+    </ContentPage.Behaviors>
+
+    <Border BackgroundColor="White" Margin="40">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="16" />
+        </Border.StrokeShape>
+        <Grid RowDefinitions="*,Auto" RowSpacing="16">
+            <pdfView:PdfView Uri="{Binding PdfSource}" />
+            <Button
+                Command="{Binding CloseCommand}"
+                Grid.Row="1"
+                Margin="8"
+                Text="Ok" />
+        </Grid>
+    </Border>
+
+
+</mopups:PopupPage>

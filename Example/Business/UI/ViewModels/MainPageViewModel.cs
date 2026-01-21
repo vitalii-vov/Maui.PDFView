@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using Example.Business.Services;
 using Maui.PDFView.Events;
 using System.Diagnostics;
+using Example.Business.UI.Pages;
 using Maui.PDFView.DataSources;
+using Mopups.Services;
 
 namespace Example.Business.UI.ViewModels
 {
@@ -53,6 +55,11 @@ namespace Example.Business.UI.ViewModels
         {
             //  Reset PdfView
             PdfSource = null;
+        }
+
+        [RelayCommand] private async Task NavigatePopup()
+        {
+            await MopupService.Instance.PushAsync(new MorePopup());
         }
     }
 }
