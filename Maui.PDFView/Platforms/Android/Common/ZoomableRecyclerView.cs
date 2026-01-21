@@ -1,4 +1,4 @@
-﻿using Android.Content;
+using Android.Content;
 using Android.Graphics;
 using Android.Util;
 using Android.Views;
@@ -31,10 +31,32 @@ namespace Maui.PDFView.Platforms.Android.Common
             _scaleDetector = new ScaleGestureDetector(context, this);
             _gestureDetector = new GestureDetectorCompat(context, new GestureListener(this));
             SetLayoutManager(new ZoomableLinearLayoutManager(context, LinearLayoutManager.Vertical, false));
+
+            // Allow children to draw outside bounds when zoomed
+            SetClipChildren(false);
         }
 
         public bool IsZoomEnabled { get; set; } = true;
         public float MaxZoom { get; set; } = DefaultMaxZoom;
+
+        protected override void OnLayout(bool changed, int l, int t, int r, int b)
+        {
+            base.OnLayout(changed, l, t, r, b);
+
+            // Invalidate children when layout changes to ensure proper clipping updates
+            if (_scaleFactor > MinZoom)
+            {
+                var layoutManager = GetLayoutManager();
+                if (layoutManager != null)
+                {
+                    for (int i = 0; i < layoutManager.ChildCount; i++)
+                    {
+                        var child = layoutManager.GetChildAt(i);
+                        child?.Invalidate();
+                    }
+                }
+            }
+        }
 
         public int CalculateScrollAmountY(int dy)
         {
@@ -104,9 +126,14 @@ namespace Maui.PDFView.Platforms.Android.Common
 
         protected override void DispatchDraw(Canvas canvas)
         {
+            canvas.Save();
+
+            canvas.ClipRect(0, 0, (int)(Width * _scaleFactor), (int)(Height * _scaleFactor));
+
             canvas.Translate(_tranX, _tranY);
             canvas.Scale(_scaleFactor, _scaleFactor);
             base.DispatchDraw(canvas);
+            canvas.Restore();
         }
     }
 
@@ -115,6 +142,7 @@ namespace Maui.PDFView.Platforms.Android.Common
         public bool OnScaleBegin(ScaleGestureDetector detector)
         {
             _isScaling = true;
+            Invalidate(); // Ensure clean start
             return true;
         }
 
@@ -138,12 +166,18 @@ namespace Maui.PDFView.Platforms.Android.Common
                 : OverScrollMode.IfContentScrolls;
 
             Invalidate();
+
+            // Also invalidate parent to ensure hierarchy updates
+            var parent = Parent as global::Android.Views.View;
+            parent?.Invalidate();
+
             return true;
         }
 
         public void OnScaleEnd(ScaleGestureDetector detector)
         {
             _isScaling = false;
+            Invalidate(); // Ensure final state is drawn
         }
 
         /// <summary>
