@@ -32,6 +32,7 @@ namespace Example.Business.Services
         {
             _pdfs.Add("pdf2.pdf");
             _pdfs.Add("pdf1.pdf");
+            _pdfs.Add("pdf3.pdf");
         }
 
         public byte[] GetPdfFileContent()
