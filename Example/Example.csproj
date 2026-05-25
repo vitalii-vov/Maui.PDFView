@@ -75,7 +75,6 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.1.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.70" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.70" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
 		<PackageReference Include="Mopups" Version="1.3.4" />
 	</ItemGroup>
