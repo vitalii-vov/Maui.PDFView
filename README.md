@@ -5,8 +5,12 @@ Library for display PDF files in .NET MAUI on Android, iOS, MacOS and Windows
 ![GitHub License](https://img.shields.io/github/license/vitalii-vov/Maui.PDFView?style=for-the-badge)
 ![last commit](https://img.shields.io/github/last-commit/vitalii-vov/Maui.PDFView?style=for-the-badge)
 
-| .NET MAUI | .NET 9 | .NET 10 |
-| :-------- |:-------|:--------|
+| .NET MAUI |
+| :-------- |
+
+| .NET 9 | .NET 10 |
+|:-------|:--------|
+| 1.7.3  | 1.8.0+  |
 
 | Platform  | Android | iOS | MacOS | Windows |
 | :-------- | :-----  | :-- | :---- | :------ |
