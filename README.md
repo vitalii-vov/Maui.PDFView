@@ -1,20 +1,19 @@
 # Maui.PDFView
 Library for display PDF files in .NET MAUI on Android, iOS, MacOS and Windows
 
-![NuGet Downloads](https://img.shields.io/nuget/dt/Vitvov.Maui.PDFView?style=for-the-badge)
-![GitHub License](https://img.shields.io/github/license/vitalii-vov/Maui.PDFView?style=for-the-badge)
+[![NuGet](https://img.shields.io/nuget/v/Vitvov.Maui.PDFView?style=for-the-badge)](https://www.nuget.org/packages/Vitvov.Maui.PDFView)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Vitvov.Maui.PDFView?style=for-the-badge)](https://www.nuget.org/packages/Vitvov.Maui.PDFView)
+[![License: MIT](https://img.shields.io/github/license/vitalii-vov/Maui.PDFView?style=for-the-badge)](LICENSE.txt)
+
 ![last commit](https://img.shields.io/github/last-commit/vitalii-vov/Maui.PDFView?style=for-the-badge)
-
-| .NET MAUI |
-| :-------- |
-
-| .NET 9 | .NET 10 |
-|:-------|:--------|
-| 1.7.3  | 1.8.0+  |
 
 | Platform  | Android | iOS | MacOS | Windows |
 | :-------- | :-----  | :-- | :---- | :------ |
 | Supported | ✅      | ✅   | ✅    | ✅      |
+
+| .NET 9 | .NET 10 |
+|:-------|:--------|
+| 1.7.3  | 1.8.0+  |
 
 https://github.com/vitalii-vov/Maui.PDFView/assets/71486507/4977ede8-c8db-454f-930d-ba2ec704f16d
 
