@@ -1,4 +1,4 @@
-# Maui.PDFView
+# <img src="icon.png" width="32" /> Maui.PDFView
 Library for display PDF files in .NET MAUI on Android, iOS, MacOS and Windows
 
 [![NuGet](https://img.shields.io/nuget/v/Vitvov.Maui.PDFView?style=for-the-badge)](https://www.nuget.org/packages/Vitvov.Maui.PDFView)
